@@ -24,8 +24,8 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "onlinetaklifnoma",
-  description: "Tayyor floral shablon asosida professional taklifnomalar yaratish",
+  title: "taklifnoma.ai",
+  description: "Taklifnoma.ai orqali Professional taklifnomalar yaratish",
 };
 
 export default function RootLayout({
