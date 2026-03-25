@@ -38,7 +38,13 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
   if (!mounted) return null;
 
   if (theme === 'pink') {
-    return <PinkLuxuryInvitation />;
+    return (
+      <PinkLuxuryInvitation 
+        groomName="Xurshidbek"
+        brideName="Mohinur"
+        musicUrl="/assets/die_with_a_smile.mp3"
+      />
+    );
   }
 
   if (theme === 'watch') {

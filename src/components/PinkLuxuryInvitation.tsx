@@ -10,8 +10,19 @@ import { VenueSection } from '@/components/luxury/VenueSection';
 import { CountdownSection } from '@/components/luxury/CountdownSection';
 import { GiftSection } from '@/components/luxury/GiftSection';
 
-export default function PinkLuxuryInvitation() {
+interface PinkLuxuryInvitationProps {
+  musicUrl?: string;
+  groomName?: string;
+  brideName?: string;
+}
+
+export default function PinkLuxuryInvitation({
+  musicUrl = "/assets/die_with_a_smile.mp3",
+  groomName = "Xurshidbek",
+  brideName = "Mohinur"
+}: PinkLuxuryInvitationProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
   // Disable scrolling while locked
   useEffect(() => {
@@ -32,8 +43,18 @@ export default function PinkLuxuryInvitation() {
 
   return (
     <div className="bg-white min-h-[100svh] selection:bg-purple-200 font-sans text-[#0F172A]">
+      <audio ref={audioRef} src={musicUrl} loop />
       <AnimatePresence>
-        {!isUnlocked && <LockScreen onUnlock={() => setIsUnlocked(true)} />}
+        {!isUnlocked && (
+          <LockScreen 
+            onUnlock={() => {
+              setIsUnlocked(true);
+              if (audioRef.current) {
+                audioRef.current.play().catch(e => console.log('Autoplay blocked:', e));
+              }
+            }} 
+          />
+        )}
       </AnimatePresence>
 
       <main 
@@ -51,7 +72,7 @@ export default function PinkLuxuryInvitation() {
             className="text-3xl md:text-5xl font-medium text-[#0F172A] tracking-wider italic"
             style={{ fontFamily: 'var(--font-cormorant)' }}
           >
-            Xurshidbek <span className="text-purple-300 font-light mx-1" style={{ fontFamily: 'var(--font-playfair)' }}>&amp;</span> Mohinur
+            {groomName} <span className="text-purple-300 font-light mx-1" style={{ fontFamily: 'var(--font-playfair)' }}>&amp;</span> {brideName}
           </p>
           <p className="text-xs md:text-sm font-bold text-[#64748B]">
             Eng baxtli kunimizda biz bilan bo'ling
