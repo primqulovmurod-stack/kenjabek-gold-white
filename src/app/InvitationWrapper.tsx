@@ -45,11 +45,11 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
     return (
       <div className="bg-black min-h-screen">
         <WatchDesignInvitation 
-          groomName="Kenjabek"
-          brideName="Sofiya"
-          date="24 Aprel 2026"
-          time="19:00"
-          locationName="Demir (Asr)"
+          groomName="Xurshid"
+          brideName="Mohinur"
+          date="20 Iyun 2026"
+          time="18:00"
+          locationName="Oqsaroy Koshonasi"
           locationAddress="Sho'rchi tumani"
           imageUrl="https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"
           musicUrl="/assets/die_with_a_smile.mp3"
@@ -77,12 +77,12 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
   return (
     <div className="bg-[#f8f8f8] min-h-screen">
       <RolexLuxuryInvitation 
-        groomName="Kenjabek"
-        brideName="Sofiya"
-        date="24 Aprel 2026"
-        time="19:00"
-        locationName="Demir (Asr)"
-        locationAddress="Sho'rchi tumani"
+        groomName="Xurshidbek"
+        brideName="Mohinur"
+        date="20 Iyun 2026"
+        time="18:00"
+        locationName="Oqsaroy Koshonasi"
+        locationAddress="Surxondaryo viloyati, Sho'rchi tumani"
         imageUrl="https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"
         musicUrl="/assets/die_with_a_smile.mp3"
       />
