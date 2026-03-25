@@ -24,14 +24,28 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Xurshid & Mohinur",
+  title: "Xurshid & Mohinur - Nikoh to'yi",
   description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
   openGraph: {
-    title: "Xurshid & Mohinur",
+    title: "Xurshid & Mohinur - Nikoh to'yi",
     description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
-    siteName: "Xurshid & Mohinur - Nikoh to'yi",
+    siteName: "taklifnoma.ai",
     locale: "uz_UZ",
     type: "website",
+    images: [
+      {
+        url: "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Xurshid & Mohinur Nikoh to'yi",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Xurshid & Mohinur - Nikoh to'yi",
+    description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
+    images: ["https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"],
   },
 };
 
