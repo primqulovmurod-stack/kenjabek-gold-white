@@ -453,8 +453,8 @@ export default function GoldClassicInvitation({
                        </div>
                        <div className="flex justify-between items-end border-t border-white/10 pt-4 gap-4">
                           <div className="min-w-0">
-                             <p className="text-[9px] font-bold tracking-[0.4em] text-[#D4AF37]/60 uppercase mb-1">KARTA EGASI</p>
-                             <p className="text-lg font-serif italic text-white leading-none">
+                             <p className="text-[10px] font-bold tracking-[0.4em] text-[#D4AF37] uppercase mb-1">KARTA EGASI</p>
+                             <p className="text-xl font-serif italic text-white drop-shadow-sm">
                                {groomName}
                              </p>
                           </div>
