@@ -35,12 +35,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://xurshid-mohinur-rolex.vercel.app"),
-  title: "Xurshid & Mohinur - Nikoh to'yi",
-  description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
+  metadataBase: new URL("https://kenjabek-sofiya-goldclassic.vercel.app"),
+  title: "Kenjabek & Sofiya - Nikoh to'yi",
+  description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
   openGraph: {
-    title: "Xurshid & Mohinur - Nikoh to'yi",
-    description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
+    title: "Kenjabek & Sofiya - Nikoh to'yi",
+    description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
     siteName: "taklifnoma.ai",
     locale: "uz_UZ",
     type: "website",
@@ -49,14 +49,14 @@ export const metadata: Metadata = {
         url: "/assets/og-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Xurshid & Mohinur Nikoh to'yi",
+        alt: "Kenjabek & Sofiya Nikoh to'yi",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Xurshid & Mohinur - Nikoh to'yi",
-    description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
+    title: "Kenjabek & Sofiya - Nikoh to'yi",
+    description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
     images: ["/assets/og-preview.jpg"],
   },
 };
