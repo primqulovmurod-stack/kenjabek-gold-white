@@ -45,7 +45,7 @@ export default async function Page({
   const params = await searchParams;
   
   // Logic to determine if we show the landing page or an invitation
-  const isMainLanding = host === 'taklifnoma.asia' || host === 'www.taklifnoma.asia' || host === 'taklifnoma-asia.vercel.app';
+  const isMainLanding = host.includes('taklifnoma.asia') || host.includes('taklifnoma-asia.vercel.app');
   
   // It's an invitation if theme param is present or if it's a specific Vercel host
   const isInvitation = ((host.includes('vercel.app') && !host.includes('taklifnoma-asia')) || 
