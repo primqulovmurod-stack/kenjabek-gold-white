@@ -8,9 +8,7 @@ import InvitationWrapper from './InvitationWrapper';
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
   const host = headersList.get('host') || '';
-  const isPink = host.includes('pink');
-
-  if (isPink) {
+  if (host.includes('pink')) {
     return {
       title: "Xurshidbek & Mohinur - Nikoh to'yi (Pink Edition)",
       description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
@@ -22,7 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
-  if (host.includes('gold') || host.includes('white') || host.includes('rus') || host.includes('localhost')) {
+  // Kenjabek & Snezhana (Universal match for all related hosts)
+  if (host.includes('gold') || host.includes('white') || host.includes('rus') || host.includes('kenjabek') || host.includes('localhost')) {
     return {
       title: "Кенжабек и Снежана - Свадебное приглашение",
       description: "Приглашаем вас на наш самый счастливый день!",
@@ -34,8 +33,22 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
+  // Original Rolex (specific match)
+  if (host.includes('rolex') || host.includes('xurshid')) {
+    return {
+      title: "Xurshid & Mohinur - Nikoh to'yi",
+      description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
+      openGraph: {
+        title: "Xurshid & Mohinur - Nikoh to'yi",
+        description: "Eng baxtli kunimizda biz bilan bo'ling!",
+        images: ['/assets/og-preview.jpg'],
+      }
+    };
+  }
+
+  // Global Fallback
   return {
-    title: "Xurshid & Mohinur - Nikoh to'yi",
+    title: "Virtual Taklifnoma",
     description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
     openGraph: {
       images: ['/assets/og-preview.jpg'],
