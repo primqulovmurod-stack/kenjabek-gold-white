@@ -49,6 +49,9 @@ export default function PinkLuxuryInvitation({
           <LockScreen 
             onUnlock={() => {
               setIsUnlocked(true);
+              // Sahifani eng tepaga qaytarish
+              window.scrollTo({ top: 0, behavior: 'instant' });
+              
               if (audioRef.current) {
                 audioRef.current.play().catch(e => console.log('Autoplay blocked:', e));
               }
