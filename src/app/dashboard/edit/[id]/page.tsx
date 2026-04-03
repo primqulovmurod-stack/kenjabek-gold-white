@@ -141,9 +141,9 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
             // Ignore database network errors so saving locally still succeeds
         }
             
-        alert('Ma\'lumotlar muvaffaqiyatli saqlandi!');
     } catch (err) {
         console.error('Save error:', err);
+        // We only show alert if a real fatal error happens
         alert('Saqlashda tizimli xatolik yuz berdi. Iltimos qaytadan urinib ko\'ring.');
     } finally {
         setIsSaving(false);
