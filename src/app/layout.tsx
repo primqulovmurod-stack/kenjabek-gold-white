@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     images: ["/assets/og-preview.jpg"],
   },
   verification: {
-    google: "googleee5c67c4ad103ff2.html", // Adding HTML filename for redundancy
+    google: "googleee5c67c4ad103ff2", 
   },
 };
 
