@@ -232,7 +232,7 @@ export default function PaymentModal({
                                 </button>
 
                                 <a 
-                                    href={`https://t.me/Taklifnoma_Asia?text=Assalomu alaykum, to'lov qildim. ID: ${slug || invitationId}`}
+                                    href={`https://t.me/Taklifnoma_Asia?text=Assalomu alaykum, taklifnomani faollashtirmoqchi edim. ID: ${slug || invitationId}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-full flex items-center justify-center gap-4 py-3 rounded-2xl bg-[#229ED9]/5 text-[#229ED9] font-black text-[10px] uppercase tracking-widest hover:bg-[#229ED9]/10 transition-all group"
