@@ -138,6 +138,7 @@ export default function PaymentModal({
                         <div>
                             <p className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-1">Taklifnoma ID va Statust</p>
                             <div className="flex flex-col items-center gap-2">
+                                <p className="text-sm font-black text-gray-900 tracking-widest uppercase mb-1">ID: <span className="text-[#E11D48]">{slug || invitationId}</span></p>
                                 <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-sm ring-1 ${isPaid ? 'bg-green-50 text-green-600 ring-green-100' : 'bg-orange-50 text-orange-600 ring-orange-100 animate-pulse'}`}>
                                     {isPaid ? 'Faollashtirilgan ✅' : 'Tasdiqlanish kutilmoqda ⏳'}
                                 </div>
