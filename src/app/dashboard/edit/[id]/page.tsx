@@ -22,7 +22,10 @@ import {
   ExternalLink,
   ChevronRight,
   Settings,
-  X
+  X,
+  Upload,
+  Loader2,
+  RefreshCw
 } from 'lucide-react';
 import { InvitationContent } from '@/lib/types';
 import { supabase } from '@/lib/supabase';
@@ -68,6 +71,50 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   const [isPreviewMobile, setIsPreviewMobile] = useState(true);
   const [showPayment, setShowPayment] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleMusicUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+        alert("Fayl o'lchami juda katta (Maksimal 10MB)!");
+        return;
+    }
+
+    setIsUploading(true);
+    try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${id}-${Date.now()}.${fileExt}`;
+        const filePath = `music/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+            .from('invitations')
+            .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('invitations')
+            .getPublicUrl(filePath);
+
+        updateField('musicUrl', publicUrl);
+        
+        // Auto-play preview
+        const audio = document.getElementById('preview-audio') as HTMLAudioElement;
+        if (audio) {
+            audio.src = publicUrl;
+            audio.load();
+            audio.play().catch(e => console.log('Autoplay blocked'));
+        }
+
+    } catch (err) {
+        console.error('Yuklashda xatolik:', err);
+        alert("Musiqani yuklashda xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.");
+    } finally {
+        setIsUploading(false);
+    }
+  };
 
   // Slug generation helper
   const generateSlug = (groom: string, bride: string, date: string) => {
@@ -395,15 +442,55 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                         ))}
                     </div>
                     
-                    <div className="space-y-2">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase ml-2">Maxsus Musiqa (MP3 Havola)</label>
-                        <input 
-                            type="text" 
-                            value={content.musicUrl || ''} 
-                            onChange={(e) => updateField('musicUrl', e.target.value)}
-                            placeholder="https://example.com/music.mp3"
-                            className="w-full px-6 py-4 bg-gray-50 rounded-2xl text-[10px] font-mono focus:ring-4 focus:ring-[#E11D48]/10 outline-none" 
-                        />
+                    <div className="space-y-4">
+                        <div className="flex flex-col gap-3">
+                            <label className="text-[9px] font-black text-gray-400 uppercase ml-2 tracking-widest leading-none">Maxsus Musiqa</label>
+                            <label className={`
+                                relative flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-[2rem] transition-all cursor-pointer group
+                                ${isUploading ? 'bg-gray-50 border-gray-200' : 'bg-white border-[#FFE4E6] hover:border-[#E11D48] hover:bg-[#FFF9FA]'}
+                            `}>
+                                <input 
+                                    type="file" 
+                                    className="hidden" 
+                                    accept="audio/*"
+                                    onChange={handleMusicUpload}
+                                    disabled={isUploading}
+                                />
+                                {isUploading ? (
+                                    <div className="flex flex-col items-center gap-3">
+                                        <Loader2 size={32} className="text-[#E11D48] animate-spin" />
+                                        <p className="text-[10px] font-black uppercase text-[#E11D48] tracking-widest animate-pulse">Yuklanmoqda...</p>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="w-12 h-12 bg-[#E11D48]/5 rounded-full flex items-center justify-center text-[#E11D48] group-hover:scale-110 group-hover:bg-[#E11D48]/10 transition-all">
+                                            <Upload size={24} />
+                                        </div>
+                                        <p className="text-[10px] font-black uppercase text-gray-700 tracking-widest">Muzika Yuklash (MP3)</p>
+                                        <p className="text-[9px] text-gray-400 font-medium tracking-tight">O'zingizga yoqqan musiqani tanlang</p>
+                                    </div>
+                                )}
+                            </label>
+                        </div>
+
+                        <div className="relative pt-2">
+                            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                <div className="w-full border-t border-gray-100"></div>
+                            </div>
+                            <div className="relative flex justify-center text-center">
+                                <span className="bg-white px-4 text-[8px] font-black text-gray-300 uppercase tracking-[0.3em]">Yoki havola orqali</span>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <input 
+                                type="text" 
+                                value={content.musicUrl || ''} 
+                                onChange={(e) => updateField('musicUrl', e.target.value)}
+                                placeholder="https://example.com/music.mp3"
+                                className="w-full px-8 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:border-[#E11D48]/10 focus:ring-4 focus:ring-[#E11D48]/5 outline-none transition-all text-[11px] font-mono" 
+                            />
+                        </div>
                     </div>
                 </div>
               )}
