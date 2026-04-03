@@ -117,8 +117,8 @@ const LandingPage = () => {
                             <CheckCircle2 size={24} />
                         </div>
                         <div>
-                            <div className="font-black text-sm dark:text-white uppercase tracking-tight">Xavfsiz To'lov</div>
-                            <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Kafolatlangan xizmat</div>
+                            <div className="font-black text-sm dark:text-white uppercase tracking-tight leading-tight">3 daqiqa ichida</div>
+                            <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Taklifnoma yarating</div>
                         </div>
                      </div>
                   </div>
