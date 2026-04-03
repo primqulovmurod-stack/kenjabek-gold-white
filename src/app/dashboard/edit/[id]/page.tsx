@@ -363,14 +363,33 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
 
               {content.musicUrl !== '' && (
                 <div className="space-y-4">
-                    <div className="grid grid-cols-1 gap-2">
+                    <div className="grid grid-cols-1 gap-3">
                         {MUSIC_TRACKS.map(track => (
                             <button
                               key={track.url}
-                              onClick={() => updateField('musicUrl', track.url)}
-                              className={`p-4 rounded-2xl text-[10px] font-bold text-left transition-all border ${content.musicUrl === track.url ? 'bg-[#E11D48]/5 border-[#E11D48] text-[#E11D48]' : 'bg-white border-gray-100 text-gray-500 hover:bg-gray-50'}`}
+                              onClick={() => {
+                                  updateField('musicUrl', track.url);
+                                  const preview = document.getElementById('preview-audio') as HTMLAudioElement;
+                                  if (preview) {
+                                      try {
+                                          preview.pause();
+                                          preview.src = track.url;
+                                          preview.play().catch(e => console.log('Autoplay blocked'));
+                                      } catch (e) { console.error(e); }
+                                  }
+                              }}
+                              className={`p-6 rounded-3xl text-left transition-all border-2 flex items-center justify-between group ${
+                                content.musicUrl === track.url 
+                                ? 'bg-white border-[#E11D48] text-[#E11D48] shadow-2xl scale-[1.02]' 
+                                : 'bg-white border-gray-50 text-gray-500 hover:border-[#FFE4E6] hover:bg-gray-50/50'
+                              }`}
                             >
-                                {track.name}
+                                <span className="text-[11px] font-black uppercase tracking-tighter">{track.name}</span>
+                                {content.musicUrl === track.url && (
+                                    <div className="flex gap-1">
+                                        {[1,2,3].map(i => <div key={i} className="w-1.5 h-4 bg-[#E11D48] rounded-full animate-bounce" style={{ animationDelay: `${i*0.1}s` }} />)}
+                                    </div>
+                                )}
                             </button>
                         ))}
                     </div>
@@ -494,7 +513,7 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                 onClick={handleSave}
                 className="w-14 h-14 bg-[#E11D48] rounded-full flex items-center justify-center text-white shadow-xl shadow-[#E11D48]/30 active:scale-90 transition-all border-4 border-white"
               >
-                  {isSaving ? <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" /> : <Save size={24} />}
+                  {isSaving ? <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 size={24} />}
               </button>
           </div>
 
@@ -508,6 +527,9 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
               <span className="text-[9px] font-black uppercase tracking-widest">Ko'rish</span>
           </button>
       </div>
+
+      {/* Hidden Audio for Previewing */}
+      <audio id="preview-audio" className="hidden" />
 
       {/* Success/Payment Modal */}
       <PaymentModal 
