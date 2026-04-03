@@ -415,27 +415,43 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                             <button
                               key={track.url}
                               onClick={() => {
-                                  updateField('musicUrl', track.url);
                                   const preview = document.getElementById('preview-audio') as HTMLAudioElement;
                                   if (preview) {
-                                      try {
+                                      // Toggle logic: If same URL and is playing -> Pause
+                                      if (content.musicUrl === track.url && !preview.paused) {
                                           preview.pause();
-                                          preview.src = track.url;
-                                          preview.load(); // Ensure new source is loaded
-                                          preview.play().catch(e => console.log('Autoplay blocked'));
-                                      } catch (e) { console.error(e); }
+                                          // Update state to trigger re-render for the bars
+                                          updateField('musicUrl', track.url); 
+                                      } else {
+                                          updateField('musicUrl', track.url);
+                                          try {
+                                              preview.src = track.url;
+                                              preview.load(); 
+                                              preview.play().catch(e => console.log('Autoplay blocked'));
+                                          } catch (e) { console.error(e); }
+                                      }
                                   }
                               }}
-                              className={`p-6 rounded-3xl text-left transition-all border-2 flex items-center justify-between group ${
+                              className={`p-6 rounded-3xl text-left transition-all border-2 flex items-center justify-between group active:scale-[0.98] ${
                                 content.musicUrl === track.url 
-                                ? 'bg-white border-[#E11D48] text-[#E11D48] shadow-2xl scale-[1.02]' 
-                                : 'bg-white border-gray-50 text-gray-500 hover:border-[#FFE4E6] hover:bg-gray-50/50'
+                                ? 'bg-white border-[#E11D48] text-[#E11D48] shadow-xl' 
+                                : 'bg-white border-gray-50 text-gray-500 hover:border-[#FFE4E6]'
                               }`}
                             >
                                 <span className="text-[11px] font-black uppercase tracking-tighter">{track.name}</span>
                                 {content.musicUrl === track.url && (
-                                    <div className="flex gap-1">
-                                        {[1,2,3].map(i => <div key={i} className="w-1.5 h-4 bg-[#E11D48] rounded-full animate-bounce" style={{ animationDelay: `${i*0.1}s` }} />)}
+                                    <div className="flex gap-1 items-end h-4">
+                                        {[1,2,3].map(i => (
+                                            <div 
+                                                key={i} 
+                                                className="w-1.5 h-full bg-[#E11D48] rounded-full animate-bounce" 
+                                                style={{ 
+                                                    animationDelay: `${i*0.1}s`,
+                                                    // Only move if audio is NOT paused
+                                                    animationPlayState: document.getElementById('preview-audio') && !(document.getElementById('preview-audio') as HTMLAudioElement).paused ? 'running' : 'paused'
+                                                }} 
+                                            />
+                                        ))}
                                     </div>
                                 )}
                             </button>
@@ -546,13 +562,19 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Expert Preview Pane */}
-      <div className={`flex-1 bg-gray-50 flex items-center justify-center overflow-hidden lg:h-screen transition-all duration-500 ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'} min-h-screen lg:min-h-0 relative`}>
+      <div className={`flex-1 bg-gray-50 flex items-center justify-center overflow-x-hidden transition-all duration-500 ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'} min-h-screen lg:min-h-0 relative`}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#FFE4E6_0%,transparent_60%)] opacity-40"></div>
         
+        {/* Mobile View: No Frame, Full Height */}
+        <div className="lg:hidden w-full h-full relative z-10 overflow-y-auto">
+             <TemplatePreview content={content} />
+        </div>
+
+        {/* Desktop View: With Device Frame */}
         <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative z-10 scale-[0.8] md:scale-95 xxl:scale-110"
+            className="hidden lg:block relative z-10 scale-[0.8] md:scale-95 xxl:scale-110"
         >
             <div className="absolute -inset-10 bg-black/10 blur-[100px] rounded-full opacity-10" />
             
