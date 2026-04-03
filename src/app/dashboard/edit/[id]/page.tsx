@@ -247,12 +247,13 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                     id: id,
                     slug: finalSlug,
                     content: content,
+                    phone: content.phone, 
                     is_paid: isPaid
                 });
                 
             if (error) {
-                console.error('DATABASE SYNC ERROR:', error.message);
-                // Silent error in production to not block user, but log it
+                console.error('DATABASE SYNC ERROR:', error);
+                alert("Bazaga saqlashda xatolik! Supabase'da INSERT/UPDATE ruxsatlarini (public) tekshiring: " + error.message);
             }
         }
         
