@@ -69,21 +69,36 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
     return `${clean(groom)}-${clean(bride)}-${shortDate}`;
   };
 
-  // Load existing content from localStorage & Supabase
-  useEffect(() => {
-    const fetchData = async () => {
-        // 1. Try Supabase first (Master Source)
-        const { data, error } = await supabase
-            .from('invitations')
-            .select('*')
-            .eq('id', id)
-            .single();
-            
-        if (data && !error) {
-            setContent(data.content);
+  // Fetch status helper
+  const fetchStatus = async () => {
+    const { data, error } = await supabase
+        .from('invitations')
+        .select('content, is_paid')
+        .eq('id', id)
+        .single();
+        
+    if (data && !error) {
+        // Only update if something changed
+        if (data.is_paid !== isPaid) {
             setIsPaid(data.is_paid);
+            if (data.is_paid) {
+                // Show a small success toast or alert here if needed
+                console.log("Invitation activated!");
+            }
+        }
+        return data;
+    }
+    return null;
+  };
+
+  // 1. Initial Load
+  useEffect(() => {
+    const initFetch = async () => {
+        const data = await fetchStatus();
+        if (data) {
+            setContent(data.content);
         } else {
-            // 2. Fallback to LocalStorage if offline or new
+            // Fallback to LocalStorage
             const localData = localStorage.getItem('taklifnoma_invitations');
             if (localData) {
                 const invites = JSON.parse(localData);
@@ -95,9 +110,19 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
             }
         }
     };
-    
-    fetchData();
+    initFetch();
   }, [id]);
+
+  // 2. Polling for activation if not paid
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (!isPaid) {
+        interval = setInterval(() => {
+            fetchStatus();
+        }, 10000); // Check every 10 seconds
+    }
+    return () => clearInterval(interval);
+  }, [isPaid, id]);
 
   // Update content field
   const updateField = (field: keyof InvitationContent, value: string) => {
@@ -140,6 +165,11 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
         } catch (e) {
             // Ignore database network errors so saving locally still succeeds
         }
+        
+        // NEW: If not paid, automatically open payment modal after save
+        if (!isPaid) {
+            setShowPayment(true);
+        }
             
     } catch (err) {
         console.error('Save error:', err);
@@ -178,8 +208,8 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
               <span className="text-[10px] font-bold uppercase tracking-widest hidden sm:inline">Kabinet</span>
             </button>
             <div className="flex items-center gap-2">
-                <div className={`px-2 py-0.5 rounded-full text-[7px] font-black uppercase tracking-widest border ${isPaid ? 'bg-green-50 text-green-600 border-green-100' : 'bg-orange-50 text-orange-600 border-orange-100'}`}>
-                    {isPaid ? 'Faol' : 'To\'lov'}
+                <div className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border shadow-sm ${isPaid ? 'bg-green-50 text-green-600 border-green-100' : 'bg-orange-50 text-orange-600 border-orange-100 animate-pulse'}`}>
+                    {isPaid ? 'Faol ✅' : 'Chernovik (To\'lov kutilmoqda)'}
                 </div>
                 <button 
                 onClick={handleSave}
