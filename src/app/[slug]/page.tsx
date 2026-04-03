@@ -6,35 +6,6 @@ import { InvitationContent } from '@/lib/types';
 import { notFound } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Heart, Clock, Send, Lock } from 'lucide-react';
-import type { Metadata } from 'next';
-
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const unwrappedParams = await params;
-  const slug = unwrappedParams.slug;
-  
-  try {
-    const { data } = await supabase.from('invitations').select('*').eq('slug', slug).single();
-    if (data && data.content) {
-      const { groomName, brideName, imageUrl } = data.content as any;
-      return {
-        title: `${groomName} & ${brideName} - To'y taklifnomasi`,
-        description: `Sizni nikoh oqshomimizga lutfan taklif etamiz!`,
-        openGraph: {
-            title: `${groomName} & ${brideName} - Nikoh to'yi`,
-            description: `Sizni baxtli kunimizga lutfan taklif etamiz!`,
-            images: [imageUrl || 'https://images.pexels.com/photos/30206324/pexels-photo-30206324.jpeg']
-        }
-      };
-    }
-  } catch (e) {
-    // Fallback to layout default
-  }
-
-  return {
-    title: "Online Taklifnoma yarating — 3 daqiqa ichida",
-    description: "Eng chiroyli virtual taklifnomalar xizmati."
-  };
-}
 
 export default function InvitationPage({ params }: { params: Promise<{ slug: string }> }) {
   const unwrappedParams = use(params);

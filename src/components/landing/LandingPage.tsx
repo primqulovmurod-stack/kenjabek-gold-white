@@ -113,12 +113,12 @@ const LandingPage = () => {
                   />
                   <div className="absolute -bottom-10 -left-10 bg-white dark:bg-gray-900 p-8 rounded-[3rem] shadow-2xl border border-gray-100 dark:border-white/5 z-20 space-y-4">
                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-green-500/20">
-                            <CheckCircle2 size={24} />
+                        <div className="w-12 h-12 bg-[#E11D48] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-[#E11D48]/20">
+                            <Clock size={24} />
                         </div>
                         <div>
-                            <div className="font-black text-sm dark:text-white uppercase tracking-tight leading-tight">3 daqiqa ichida</div>
-                            <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Taklifnoma yarating</div>
+                            <div className="font-black text-sm dark:text-white uppercase tracking-tight">3 daqiqa ichida</div>
+                            <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">O'z taklifnomangizni yarating</div>
                         </div>
                      </div>
                   </div>

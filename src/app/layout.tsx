@@ -40,28 +40,28 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Online Taklifnoma yarating — 3 daqiqa ichida",
-  description: "Mehmonlaringizni zamonaviy va go'zal virtual taklifnoma bilan hayratda qoldiring.",
+  title: "Kenjabek & Safiya - Nikoh to'yi",
+  description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
   openGraph: {
-    title: "Online Taklifnoma yarating — 3 daqiqa ichida",
-    description: "Mehmonlaringizni zamonaviy va go'zal virtual taklifnoma bilan hayratda qoldiring.",
-    siteName: "taklifnoma.asia",
+    title: "Kenjabek & Safiya - Nikoh to'yi",
+    description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
+    siteName: "taklifnoma.ai",
     locale: "uz_UZ",
     type: "website",
     images: [
       {
-        url: "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
+        url: "/assets/og-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Online Taklifnoma",
+        alt: "Kenjabek & Safiya Nikoh to'yi",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Online Taklifnoma yarating — 3 daqiqa ichida",
-    description: "Mehmonlaringizni zamonaviy va go'zal virtual taklifnoma bilan hayratda qoldiring.",
-    images: ["https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"],
+    title: "Kenjabek & Safiya - Nikoh to'yi",
+    description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
+    images: ["/assets/og-preview.jpg"],
   },
 };
 
