@@ -103,7 +103,7 @@ export default function DashboardPage() {
 
 
   return (
-    <div className={`min-h-screen transition-all duration-500 p-6 md:p-12 pb-24 space-y-12 ${isDarkMode ? 'bg-[#0F0F10]' : 'bg-[#FFF9FA]'}`}>
+    <div className={`min-h-screen transition-all duration-500 p-6 md:p-12 pb-24 space-y-12 ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-[#FFF9FA]'}`}>
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-2">
             <h1 className={`font-playfair text-4xl font-black tracking-tight transition-colors ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Mening Taklifnomalarim</h1>
