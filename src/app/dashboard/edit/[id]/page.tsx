@@ -438,35 +438,43 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
         </div>
       </div>
 
-      {/* Preview Pane */}
-      <div className={`flex-1 bg-[#FFF9FA] flex items-center justify-center overflow-hidden lg:h-screen bg-[radial-gradient(#FFE4E6_1px,transparent_1px)] [background-size:20px_20px] transition-all duration-500 ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'} min-h-screen lg:min-h-0`}>
-        <div className={`transition-all duration-1000 ease-in-out shadow-[0_80px_160px_-40px_rgba(0,0,0,0.3)] overflow-hidden relative transform translate-z-0 contain-layout ${
-          isPreviewMobile 
-          ? 'w-full lg:w-[375px] h-full lg:h-[812px] lg:rounded-[3.5rem] lg:border-[12px] lg:border-gray-950 lg:ring-[15px] lg:ring-[#E11D48]/10' 
-          : 'w-full h-full lg:w-[90%] lg:h-[85%] lg:rounded-[2rem] lg:border-[12px] lg:border-gray-950 lg:ring-[15px] lg:ring-[#E11D48]/10'
-        }`}>
-          {/* Phone Details */}
-          {isPreviewMobile && (
-            <>
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-gray-950 rounded-b-3xl z-[100] shadow-inner flex items-center justify-center">
-                  <div className="w-12 h-1 rounded-full bg-gray-800" />
-              </div>
-              <div className="absolute top-2 left-1/2 translate-x-4 w-2 h-2 rounded-full bg-gray-800 z-[100]"></div>
-            </>
-          )}
+      {/* Expert Preview Pane */}
+      <div className={`flex-1 bg-gray-50 flex items-center justify-center overflow-hidden lg:h-screen transition-all duration-500 ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'} min-h-screen lg:min-h-0 relative`}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#FFE4E6_0%,transparent_60%)] opacity-40"></div>
+        
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative z-10 scale-[0.8] md:scale-95 xxl:scale-110"
+        >
+            <div className="absolute -inset-10 bg-black/10 blur-[100px] rounded-full opacity-10" />
+            
+            {/* Device Frame */}
+            <div className="w-[385px] h-[795px] bg-gray-900 rounded-[3.8rem] p-3 shadow-[0_50px_120px_rgba(0,0,0,0.3)] border-[10px] border-gray-800 relative ring-1 ring-gray-700/50">
+                {/* Dynamic Island */}
+                <div className="absolute top-9 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-[1000] shadow-inner flex items-center justify-center">
+                    <div className="w-14 h-1.5 bg-gray-950/20 rounded-full" />
+                </div>
+                
+                {/* Screen Content */}
+                <div className="w-full h-full bg-white rounded-[2.8rem] overflow-hidden relative shadow-inner">
+                    <TemplatePreview content={content} />
+                    
+                    {/* Floating Status */}
+                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[150]">
+                      <div className="flex items-center gap-2 bg-black/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/10">
+                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                         <span className="text-[9px] font-black text-white uppercase tracking-widest">REAL-TIME PREVIEW</span>
+                      </div>
+                    </div>
+                </div>
 
-          <div className="w-full h-full overflow-y-auto no-scrollbar bg-white">
-            <TemplatePreview content={content} />
-          </div>
-
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[100] w-full px-6">
-            <div className="flex items-center justify-center gap-2 bg-black/80 backdrop-blur-xl px-5 py-2.5 rounded-full shadow-2xl border border-white/10 group">
-               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse ring-4 ring-green-500/20"></div>
-               <span className="text-[10px] font-black text-white uppercase tracking-widest hidden sm:inline">Jonli sinxronizatsiya faol</span>
-               <span className="text-[10px] font-black text-white uppercase tracking-widest sm:hidden">LIVE</span>
+                {/* Device Buttons */}
+                <div className="absolute top-36 -left-3 w-1.5 h-14 bg-gray-800 rounded-r-lg" />
+                <div className="absolute top-56 -left-3 w-1.5 h-24 bg-gray-800 rounded-r-lg" />
+                <div className="absolute top-36 -right-3 w-1.5 h-28 bg-gray-800 rounded-l-lg" />
             </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Mobile Navigation Tabs */}

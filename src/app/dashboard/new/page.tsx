@@ -122,30 +122,31 @@ export default function NewInvitationPage() {
                       </div>
 
                       {/* Action Buttons Overlay */}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 p-8">
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-6 p-10">
                           <button 
                             onClick={(e) => {
                                 e.stopPropagation();
                                 window.open(template.image, '_blank');
                             }}
-                            className="w-full py-4 bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-gray-900 transition-all flex items-center justify-center gap-2"
+                            className="w-full py-5 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-3xl font-black text-[11px] uppercase tracking-widest hover:bg-white hover:text-gray-900 transition-all flex items-center justify-center gap-2"
                           >
-                              <Eye size={18} /> KATTALAShTIRIB KO'RISh
+                              <Eye size={20} /> TEZKO'R KO'RISh
                           </button>
                           <button 
-                            className="w-full py-4 bg-[#E11D48] text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-[#E11D48]/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+                            className="w-full py-5 bg-[#E11D48] text-white rounded-3xl font-black text-[11px] uppercase tracking-widest shadow-2xl shadow-[#E11D48]/30 scale-105 hover:scale-110 active:scale-95 transition-all flex items-center justify-center gap-2"
                           >
-                              <CheckCircle size={18} /> UShBU DIZAYNNI TANLASh
+                              <CheckCircle size={20} /> UShBU DIZAYNNI TANLASh
                           </button>
                       </div>
                   </div>
 
-                  <div className="p-8 space-y-3 bg-white text-center">
-                      <h4 className="font-playfair text-2xl font-black text-gray-900 group-hover:text-[#E11D48] transition-colors">{template.name}</h4>
-                      <div className="flex items-center justify-center gap-1.5 text-[#E11D48]">
-                          {[1,2,3,4,5].map(star => <Star key={star} size={14} fill="currentColor" />)}
+                  <div className="p-10 space-y-3 bg-white text-center border-t border-gray-50">
+                      <p className="text-[9px] text-[#E11D48] font-black uppercase tracking-[0.3em] mb-2">{template.style}</p>
+                      <h4 className="font-playfair text-3xl font-black text-gray-900 group-hover:text-[#E11D48] transition-colors leading-tight">{template.name}</h4>
+                      <div className="flex items-center justify-center gap-1.5 text-yellow-400 pt-2">
+                          {[1,2,3,4,5].map(star => <Star key={star} size={16} fill="currentColor" />) }
                       </div>
-                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] pt-2">Premium Edition 2026</p>
+                      <p className="text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em] pt-4">Taklifnoma Asia — Premium</p>
                   </div>
               </motion.div>
           ))}
