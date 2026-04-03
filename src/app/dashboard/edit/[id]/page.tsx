@@ -128,9 +128,9 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-[#FFF9FA] overflow-hidden">
+    <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen bg-[#FFF9FA] lg:overflow-hidden">
       {/* Editor Pane */}
-      <div className={`w-full lg:w-[450px] bg-white border-r border-[#FFE4E6]/50 flex flex-col shadow-xl z-20 ${activeTab === 'preview' ? 'hidden lg:flex' : 'flex'}`}>
+      <div className={`w-full lg:w-[450px] bg-white border-r border-[#FFE4E6]/50 flex flex-col shadow-xl z-20 ${activeTab === 'preview' ? 'hidden lg:flex' : 'flex'} min-h-full`}>
         <div className="p-6 border-b border-[#FFE4E6]/20 bg-white sticky top-0 z-30">
           <div className="flex items-center justify-between mb-4">
             <button 
