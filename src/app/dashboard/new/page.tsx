@@ -4,16 +4,18 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Sparkles, Star, Heart, CheckCircle, ArrowRight, Eye } from 'lucide-react';
+import { LayoutDashboard, Sparkles, Star, CheckCircle, Eye } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { templates } from '@/components/dashboard/TemplatePreview';
 import { supabase } from '@/lib/supabase';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function NewInvitationPage() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
-    const handleSelectTemplate = async (templateId: string) => {
-    // Generate a unique ID (all caps for consistency with admin screenshot)
+  const handleSelectTemplate = async (templateId: string) => {
     const newId = Math.random().toString(36).substring(2, 9).toUpperCase();
     const newInvitation = {
         id: newId,
@@ -35,7 +37,6 @@ export default function NewInvitationPage() {
         }
     };
 
-    // 1. Save to LocalStorage
     const localData = localStorage.getItem('taklifnoma_invitations');
     let invites = [];
     if (localData) {
@@ -44,33 +45,22 @@ export default function NewInvitationPage() {
     invites.push(newInvitation);
     localStorage.setItem('taklifnoma_invitations', JSON.stringify(invites));
 
-    // 2. Sync with Supabase (AWAIT IT)
     const hasRealDb = process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
-    
     if (hasRealDb) {
         try {
-            const { error } = await supabase.from('invitations').insert({
+            await supabase.from('invitations').insert({
                 id: newId,
                 slug: newInvitation.slug,
                 is_paid: false,
                 content: newInvitation.content
             });
-            
-            if (error) {
-                console.error('Supabase initial sync error:', error.message);
-                // Even if it fails, we still proceed to editor because we have LocalStorage fallback
-            }
-        } catch (e) {
-            console.error('Initial Supabase sync failed:', e);
-        }
+        } catch (e) { console.error(e); }
     }
-
-    // 3. Navigate to editor
     router.push(`/dashboard/edit/${newId}`);
   };
 
   return (
-    <div className="p-6 md:p-12 space-y-12">
+    <div className={`p-6 md:p-12 space-y-12 transition-all duration-500 min-h-screen ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-[#FFF9FA]'}`}>
       <header className="space-y-4">
         <Link 
             href="/dashboard"
@@ -81,7 +71,7 @@ export default function NewInvitationPage() {
         </Link>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
-                <h1 className="font-playfair text-4xl font-black text-gray-900 tracking-tight">Dizayn Tanlash</h1>
+                <h1 className={`font-playfair text-4xl font-black transition-colors ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Dizayn Tanlash</h1>
                 <p className="text-gray-400 text-[10px] font-black tracking-widest uppercase flex items-center gap-2">
                     <Sparkles size={14} className="text-[#E11D48]" fill="currentColor" />
                     O'zingizga yoqqan premium dizaynni tanlab, tahrirlashni boshlang
@@ -98,11 +88,12 @@ export default function NewInvitationPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -15, scale: 1.02 }}
-                className="bg-white rounded-[2.5rem] border border-[#FFE4E6] shadow-[0_30px_60px_-15px_rgba(225,29,72,0.05)] overflow-hidden flex flex-col group cursor-pointer"
+                className={`rounded-[2.5rem] border shadow-[0_30px_60px_-15px_rgba(225,29,72,0.05)] overflow-hidden flex flex-col group cursor-pointer transition-all duration-300 ${
+                    isDarkMode ? 'bg-[#141416] border-white/5' : 'bg-white border-[#FFE4E6]'
+                }`}
                 onClick={() => handleSelectTemplate(template.id)}
               >
                   <div className="aspect-[3/4] bg-[#FDFCF9] relative overflow-hidden">
-                      {/* Real Image Preview */}
                       <Image 
                         src={template.image} 
                         alt={template.name}
@@ -110,18 +101,16 @@ export default function NewInvitationPage() {
                         className="object-cover group-hover:scale-110 transition-transform duration-1000"
                         priority={i < 3}
                       />
-                      
-                      {/* Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/10 to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />
                       
-                      {/* Floating Badge */}
                       <div className="absolute top-6 right-6">
-                          <div className="px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-widest bg-white/90 backdrop-blur-md text-gray-900 shadow-xl border border-white/20">
+                          <div className={`px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md shadow-xl border transition-all ${
+                              isDarkMode ? 'bg-black/60 text-white border-white/10' : 'bg-white/90 text-gray-900 border-white/20'
+                          }`}>
                               {template.style}
                           </div>
                       </div>
 
-                      {/* Action Buttons Overlay */}
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-6 p-10">
                           <button 
                             onClick={(e) => {
@@ -140,13 +129,17 @@ export default function NewInvitationPage() {
                       </div>
                   </div>
 
-                  <div className="p-10 space-y-3 bg-white text-center border-t border-gray-50">
+                  <div className={`p-10 space-y-3 text-center border-t transition-all ${
+                      isDarkMode ? 'bg-[#141416] border-white/5' : 'bg-white border-gray-50'
+                  }`}>
                       <p className="text-[9px] text-[#E11D48] font-black uppercase tracking-[0.3em] mb-2">{template.style}</p>
-                      <h4 className="font-playfair text-3xl font-black text-gray-900 group-hover:text-[#E11D48] transition-colors leading-tight">{template.name}</h4>
+                      <h4 className={`font-playfair text-3xl font-black group-hover:text-[#E11D48] transition-colors leading-tight ${
+                          isDarkMode ? 'text-white' : 'text-gray-900'
+                      }`}>{template.name}</h4>
                       <div className="flex items-center justify-center gap-1.5 text-yellow-400 pt-2">
                           {[1,2,3,4,5].map(star => <Star key={star} size={16} fill="currentColor" />) }
                       </div>
-                      <p className="text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em] pt-4">Taklifnoma Asia — Premium</p>
+                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] pt-4">Taklifnoma Asia — Premium</p>
                   </div>
               </motion.div>
           ))}
