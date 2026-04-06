@@ -11,7 +11,7 @@ interface GiftSectionProps {
 
 export function GiftSection({ 
   cardNumber = "8600 1234 5678 9012", 
-  cardName = "Kenjabek" 
+  cardName = "MUROD P." 
 }: GiftSectionProps) {
   const [copied, setCopied] = useState(false);
 

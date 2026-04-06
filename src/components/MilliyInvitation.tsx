@@ -28,7 +28,7 @@ export default function MilliyInvitation({
   locationAddress = "Toshkent sh., Yunusobod t., 4-mavze, 12-uy",
   musicUrl = "/assets/die_with_a_smile.mp3",
   cardNumber = "9860 1234 5678 1234",
-  cardName = "Kenjabek"
+  cardName = "MUROD P."
 }: MilliyInvitationProps) {
   const [isCopied, setIsCopied] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);

@@ -28,7 +28,7 @@ export default function WatchDesignInvitation({
   imageUrl = "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
   musicUrl = "/assets/die_with_a_smile.mp3",
   cardNumber = "9860 1234 5678 9012",
-  cardName = "Kenjabek"
+  cardName = "MUROD P."
 }: WatchDesignInvitationProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
