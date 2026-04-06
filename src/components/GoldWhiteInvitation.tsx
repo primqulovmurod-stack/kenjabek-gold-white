@@ -32,7 +32,7 @@ export default function GoldWhiteInvitation({
   imageUrl = "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
   musicUrl = "/assets/die_with_a_smile.mp3",
   cardNumber = "9860 6004 0356 5382",
-  cardName = "MUROD P."
+  cardName = "Kenjabek"
 }: GoldWhiteInvitationProps) {
   const [isOpened, setIsOpened] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
