@@ -28,7 +28,7 @@ export default function LuxuryDarkInvitation({
   imageUrl = "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000",
   musicUrl = "/assets/die_with_a_smile.mp3",
   cardNumber = "9860 1234 5678 1234",
-  cardName = "MUROD P."
+  cardName = "Kenjabek"
 }: LuxuryDarkInvitationProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
