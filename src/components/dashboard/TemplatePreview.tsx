@@ -5,6 +5,7 @@ import { InvitationContent } from '@/lib/types';
 import GoldWhiteInvitation from '@/components/GoldWhiteInvitation';
 import { FloralInvitation } from '@/components/FloralInvitation';
 import GoldClassicInvitation from '@/components/GoldClassicInvitation';
+import GoldClassicWhiteInvitation from '@/components/GoldClassicWhiteInvitation';
 import RolexLuxuryInvitation from '@/components/RolexLuxuryInvitation';
 import MilliyInvitation from '@/components/MilliyInvitation';
 import WatchDesignInvitation from '@/components/WatchDesignInvitation';
@@ -16,63 +17,61 @@ import StitchInvitation from '@/components/StitchInvitation/Main';
 
 export const templates = [
   { 
-    id: 'rolex', 
-    name: 'Rolex Luxury Edition', 
-    image: 'https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg',
-    style: 'Modern & Elite'
-  },
-  { 
-    id: 'gold-white', 
-    name: 'Gold & White Classic', 
-    image: 'https://images.pexels.com/photos/2253842/pexels-photo-2253842.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    style: 'Elegant & Classic'
-  },
-  { 
-    id: 'pink-white', 
-    name: 'Pink Romance Edition', 
+    id: 'pink-luxury', 
+    name: 'Pink Luxury Special', 
     image: 'https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    style: 'Soft & Romantic'
+    style: 'Modern & Soft'
   },
   { 
-    id: 'luxury-dark', 
-    name: 'Luxury Dark Special', 
-    image: 'https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    style: 'Premium Dark'
+    id: 'goldclassic', 
+    name: 'Gold Classic Black', 
+    image: 'https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg',
+    style: 'Gold & Black'
+  },
+  { 
+    id: 'gold-classic-white', 
+    name: 'Gold Classic White', 
+    image: 'https://images.pexels.com/photos/313707/pexels-photo-313707.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    style: 'Gold & White'
   }
 ];
 
 interface TemplatePreviewProps {
   content: InvitationContent;
-  readonly?: boolean;
+  cardName?: string;
+  isPreview?: boolean;
+  isMuted?: boolean;
 }
 
-export default function TemplatePreview({ content, readonly }: TemplatePreviewProps) {
-  const theme = content.theme || 'gold-white';
+export default function TemplatePreview({ content, isPreview, isMuted }: TemplatePreviewProps) {
+  const theme = content.theme || 'pink-luxury';
 
   switch (theme) {
     case 'gold-white':
-      return <GoldWhiteInvitation {...content} />;
+      return <GoldWhiteInvitation {...content} isPreview />;
     case 'floral':
-      return <FloralInvitation content={content} />;
+      return <FloralInvitation content={content} isPreview />;
     case 'goldclassic':
-        return <GoldClassicInvitation {...content} />;
+        return <GoldClassicInvitation {...content} isPreview isMuted={isMuted} />;
+    case 'gold-classic-white':
+        return <GoldClassicWhiteInvitation {...content} isPreview isMuted={isMuted} />;
     case 'rolex':
-        return <RolexLuxuryInvitation {...content} />;
+        return <RolexLuxuryInvitation {...content} isPreview />;
     case 'milliy':
-        return <MilliyInvitation {...content} />;
+        return <MilliyInvitation {...content} isPreview />;
     case 'pink-luxury':
-        return <PinkLuxuryInvitation {...content} />;
+        return <PinkLuxuryInvitation {...content} isPreview isMuted={isMuted} />;
     case 'watch-design':
-        return <WatchDesignInvitation {...content} />;
+        return <WatchDesignInvitation {...content} isPreview />;
     case 'elegant':
-        return <ElegantInvitation content={content} />;
+        return <ElegantInvitation content={content} isPreview />;
     case 'luxury-dark':
-        return <LuxuryDarkInvitation {...content} />;
+        return <LuxuryDarkInvitation {...content} isPreview />;
     case 'pink-white':
-        return <PinkWhiteInvitation {...content} />;
+        return <PinkWhiteInvitation {...content} isPreview />;
     case 'stitch':
-        return <StitchInvitation />;
+        return <StitchInvitation isPreview />;
     default:
-      return <GoldWhiteInvitation {...content} />;
+      return <GoldWhiteInvitation {...content} isPreview />;
   }
 }

@@ -5,37 +5,58 @@ import { AnimatePresence } from 'framer-motion';
 
 import { LockScreen } from '@/components/luxury/LockScreen';
 import { HeroSection } from '@/components/luxury/HeroSection';
+import CountdownSection from '@/components/luxury/CountdownSection';
 import { CalendarSection } from '@/components/luxury/CalendarSection';
 import { VenueSection } from '@/components/luxury/VenueSection';
-import { CountdownSection } from '@/components/luxury/CountdownSection';
 import { GiftSection } from '@/components/luxury/GiftSection';
 
 interface PinkLuxuryInvitationProps {
-  musicUrl?: string;
-  groomName?: string;
-  brideName?: string;
+  groomName: string;
+  brideName: string;
+  date: string;
+  time: string;
+  locationName: string;
+  locationAddress?: string;
+  locationUrl: string;
+  imageUrl: string;
+  musicUrl: string;
   cardNumber?: string;
   cardName?: string;
+  showGift?: boolean;
+  description?: string;
+  isPreview?: boolean;
+  isMuted?: boolean;
 }
 
 export default function PinkLuxuryInvitation({
-  musicUrl = "/assets/die_with_a_smile.mp3",
-  groomName = "Xurshidbek",
-  brideName = "Mohinur",
+  groomName,
+  brideName,
+  date,
+  time,
+  locationName,
+  locationAddress,
+  locationUrl,
+  imageUrl,
+  musicUrl,
   cardNumber,
-  cardName
+  cardName,
+  showGift = false,
+  description,
+  isPreview = false,
+  isMuted = false
 }: PinkLuxuryInvitationProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
   // Disable scrolling while locked
   useEffect(() => {
+    if (isPreview) return;
     if (!isUnlocked) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-  }, [isUnlocked]);
+  }, [isUnlocked, isPreview]);
 
   // Prevent hydration mismatch
   const [mounted, setMounted] = useState(false);
@@ -47,7 +68,7 @@ export default function PinkLuxuryInvitation({
 
   return (
     <div className="bg-white min-h-[100svh] selection:bg-purple-200 font-sans text-[#0F172A]">
-      <audio ref={audioRef} src={musicUrl} loop />
+      {musicUrl && <audio ref={audioRef} src={musicUrl} loop muted={isMuted} />}
       <AnimatePresence>
         {!isUnlocked && (
           <LockScreen 
@@ -67,11 +88,13 @@ export default function PinkLuxuryInvitation({
       <main 
         className={`relative w-full ${isUnlocked ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'} transition-opacity duration-1000 delay-500`}
       >
-        <HeroSection />
-        <CalendarSection />
-        <VenueSection />
-        <CountdownSection />
-        <GiftSection cardNumber={cardNumber} cardName={cardName} />
+        <HeroSection groomName={groomName} brideName={brideName} date={date} time={time} isPreview={isPreview} imageUrl={imageUrl} locationUrl={locationUrl} locationName={locationName} locationAddress={locationAddress} description={description} />
+        <CountdownSection weddingDate={date} isPreview={isPreview} />
+        <CalendarSection date={date} isPreview={isPreview} />
+        <VenueSection locationName={locationName} locationAddress={locationAddress} locationUrl={locationUrl} isPreview={isPreview} />
+        {showGift && (
+          <GiftSection cardNumber={cardNumber} cardName={cardName} isPreview={isPreview} />
+        )}
         
         <footer className="py-12 md:py-24 bg-[#F8FAFC] text-center border-t border-purple-50 flex flex-col items-center justify-center space-y-4 md:space-y-6 font-sans px-4">
           <div className="w-12 h-[3px] bg-purple-600 rounded-full" />

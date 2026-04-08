@@ -26,6 +26,8 @@ import {
   Upload,
   Loader2,
   RefreshCw,
+  Volume2,
+  VolumeX,
   Sun,
   Moon
 } from 'lucide-react';
@@ -34,28 +36,29 @@ import { supabase } from '@/lib/supabase';
 import TemplatePreview, { templates } from '@/components/dashboard/TemplatePreview';
 import PaymentModal from '@/components/dashboard/PaymentModal';
 import { useTheme } from '@/context/ThemeContext';
-
 const MUSIC_TRACKS = [
     { name: 'Die With A Smile (LADY GAGA)', url: '/assets/die_with_a_smile.mp3' },
-    { name: 'Million Atirgullar (Uzbek)', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-    { name: 'Classical Piano Wedding', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-    { name: 'Romantic Guitar', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
-    { name: 'Soft Wedding Bells', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' }
+    { name: 'Alex Warren - Ordinary Wedding', url: '/assets/Alex_Warren_Ordinary_Wedding_Version_Official_Music_Video.mp3' },
+    { name: "Mendelssohn's Wedding March", url: "/assets/Mendelssohn's Wedding March.mp3" },
+    { name: 'Wedding Nasheed (English)', url: '/assets/Wedding Nasheed _ Muhammad Al Muqit (English Lyrics).mp3' },
+    { name: 'Narins Beauty Wedding Entrance', url: '/assets/Narins_Beauty_Wedding_Entrance_Music_موسيقة_عرس_نارين_بيوتي.mp3' }
 ];
 
 const INITIAL_CONTENT: InvitationContent = {
   groomName: 'Ali',
   brideName: 'Laylo',
-  date: '2026-05-15',
-  time: '18:00',
-  locationName: 'Tantana Milliy Taomlar',
-  locationAddress: 'Toshkent shahar',
-  locationUrl: 'https://maps.app.goo.gl/syEH2lA3FxpMpb7z7',
+  date: '',
+  time: '',
+  locationName: '',
+  locationAddress: '',
+  locationUrl: '',
   imageUrl: 'https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg',
-  musicUrl: '/assets/die_with_a_smile.mp3',
-  theme: 'gold-white',
-  cardNumber: '9860 6004 0356 5588',
-  cardName: 'MUROD P.'
+  musicUrl: '',
+  theme: 'pink-luxury',
+  cardNumber: '',
+  cardName: '',
+  showGift: false,
+  description: "Bizning hayotimizdagi eng muhim va unutilmas kunda yonimizda bo'lishingizdan bag'oyatda xursandmiz. Ushbu kunni biz bilan baham ko'ring."
 };
 
 export default function EditInvitationPage({ params }: { params: Promise<{ id: string }> }) {
@@ -75,12 +78,62 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   const [showPayment, setShowPayment] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedMusicName, setSelectedMusicName] = useState<string>("");
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [showCountdown, setShowCountdown] = useState(true);
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const isDarkMode = theme === 'dark';
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    if (file.size > 5 * 1024 * 1024) {
+        alert("Rasm o'lchami juda katta (Maksimal 5MB)!");
+        return;
+    }
+
+    setIsImageUploading(true);
+    try {
+        const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
+        let publicUrl = "";
+
+        if (bucketError || !buckets.find(b => b.name === 'invitations')) {
+          publicUrl = URL.createObjectURL(file);
+        } else {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${id}-${Date.now()}.${fileExt}`;
+          const filePath = `images/${fileName}`;
+
+          const { error: uploadError } = await supabase.storage
+              .from('invitations')
+              .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+          if (uploadError) throw uploadError;
+
+          const { data: { publicUrl: supabaseUrl } } = supabase.storage
+              .from('invitations')
+              .getPublicUrl(filePath);
+          
+          publicUrl = supabaseUrl;
+        }
+
+        updateField('imageUrl', publicUrl);
+    } catch (err: any) {
+        console.error('IMAGE UPLOAD ERROR:', err);
+        const localUrl = URL.createObjectURL(file);
+        updateField('imageUrl', localUrl);
+    } finally {
+        setIsImageUploading(false);
+    }
+  };
 
   const handleMusicUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    setSelectedMusicName(file.name);
 
     if (file.size > 10 * 1024 * 1024) {
         alert("Fayl o'lchami juda katta (Maksimal 10MB)!");
@@ -89,20 +142,38 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
 
     setIsUploading(true);
     try {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${id}-${Date.now()}.${fileExt}`;
-        const filePath = `music/${fileName}`;
+        // Validation
+        if (file.size > 15 * 1024 * 1024) throw new Error("Maksimal 15MB fayl yuklash mumkin.");
 
-        const { error: uploadError } = await supabase.storage
-            .from('invitations')
-            .upload(filePath, file);
+        // 1. Initial connection check & Bucket check
+        const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
+        
+        let publicUrl = "";
 
-        if (uploadError) throw uploadError;
+        if (bucketError || !buckets.find(b => b.name === 'invitations')) {
+          console.warn("Supabase Storage ulanmadi yoki 'invitations' bucket yo'q. Local preview rejimiga o'tildi.");
+          // LOCAL FALLBACK: Create a local URL for instant preview
+          publicUrl = URL.createObjectURL(file);
+        } else {
+          // SUPABASE UPLOAD (Standard flow)
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${id}-${Date.now()}.${fileExt}`;
+          const filePath = `music/${fileName}`;
 
-        const { data: { publicUrl } } = supabase.storage
-            .from('invitations')
-            .getPublicUrl(filePath);
+          const { error: uploadError } = await supabase.storage
+              .from('invitations')
+              .upload(filePath, file, { cacheControl: '3600', upsert: false });
 
+          if (uploadError) throw uploadError;
+
+          const { data: { publicUrl: supabaseUrl } } = supabase.storage
+              .from('invitations')
+              .getPublicUrl(filePath);
+          
+          publicUrl = supabaseUrl;
+        }
+
+        // Apply URL (Either Supabase or Local Blob)
         updateField('musicUrl', publicUrl);
         
         // Auto-play preview
@@ -110,20 +181,19 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
         if (audio) {
             audio.src = publicUrl;
             audio.load();
-            audio.play().catch(e => console.log('Autoplay blocked'));
+            audio.play().catch(e => console.log('Autoplay blocked preview'));
         }
 
     } catch (err: any) {
-        console.error('UPLOAD ERROR DETAILS:', err);
-        let errorMsg = "Musiqani yuklashda xatolik yuz berdi.";
-        
-        if (err?.message?.includes('bucket')) {
-            errorMsg = "Xatolik: Supabase Storage'da 'invitations' papkasi topilmadi. Iltimos, Supabase Dashboard'da yangi 'invitations' papkasini (Public) yarating.";
-        } else if (err?.message?.includes('policy')) {
-            errorMsg = "Xatolik: Fayl yuklash ruxsati yo'q. Storage Policies (RLS) qoidalarini tekshiring.";
+        console.error('UPLOAD ERROR:', err);
+        // Fallback to local even on unexpected crash
+        try {
+          const localUrl = URL.createObjectURL(file);
+          updateField('musicUrl', localUrl);
+          alert("Musiqa lokal rejimda yuklandi (Serverda xatolik bo'lgani uchun). Sahifa yangilanguncha ishlaydi.");
+        } catch (e) {
+          alert("Xatolik: " + (err.message || "Musiqani yuklab bo'lmadi"));
         }
-        
-        alert(errorMsg + "\n\nAsl xatolik: " + (err?.message || "Noma'lum xato"));
     } finally {
         setIsUploading(false);
     }
@@ -164,7 +234,23 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
     const initFetch = async () => {
         const data = await fetchStatus();
         if (data) {
-            setContent(data.content);
+            const finalContent = { ...data.content };
+            if (finalContent.theme === 'gold-white' || !finalContent.theme) {
+                finalContent.theme = 'pink-luxury';
+            }
+            // Sanani DD.MM.YYYY formatiga o'tkazish (Agar u YYYY-MM-DD bo'lsa)
+            if (finalContent.date && finalContent.date.includes('-')) {
+                const [y, m, d] = finalContent.date.split('-');
+                finalContent.date = `${d}.${m}.${y}`;
+            }
+
+            // CLEANUP LEGACY SAMPLE DATA
+            if (finalContent.locationName === 'Tantana Milliy Taomlar') finalContent.locationName = '';
+            if (finalContent.locationAddress === 'Toshkent shahar') finalContent.locationAddress = '';
+            if (finalContent.locationUrl === 'https://maps.app.goo.gl/syEH2lA3FxpMpb7z7') finalContent.locationUrl = '';
+            if (!finalContent.description) finalContent.description = "Bizning hayotimizdagi eng muhim va unutilmas kunda yonimizda bo'lishingizdan bag'oyatda xursandmiz. Ushbu kunni biz bilan baham ko'ring.";
+            
+            setContent(finalContent);
         } else {
             // Fallback to LocalStorage
             const localData = localStorage.getItem('taklifnoma_invitations');
@@ -172,7 +258,22 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                 const invites = JSON.parse(localData);
                 const currentInvite = invites.find((inv: any) => inv.id === id);
                 if (currentInvite) {
-                    setContent(currentInvite.content);
+                    const finalContent = { ...currentInvite.content };
+                    if (finalContent.theme === 'gold-white' || !finalContent.theme) {
+                        finalContent.theme = 'pink-luxury';
+                    }
+                    if (finalContent.date && finalContent.date.includes('-')) {
+                        const [y, m, d] = finalContent.date.split('-');
+                        finalContent.date = `${d}.${m}.${y}`;
+                    }
+
+                    // CLEANUP LEGACY SAMPLE DATA
+                    if (finalContent.locationName === 'Tantana Milliy Taomlar') finalContent.locationName = '';
+                    if (finalContent.locationAddress === 'Toshkent shahar') finalContent.locationAddress = '';
+                    if (finalContent.locationUrl === 'https://maps.app.goo.gl/syEH2lA3FxpMpb7z7') finalContent.locationUrl = '';
+                    if (!finalContent.description) finalContent.description = "Bizning hayotimizdagi eng muhim va unutilmas kunda yonimizda bo'lishingizdan bag'oyatda xursandmiz. Ushbu kunni biz bilan baham ko'ring.";
+
+                    setContent(finalContent);
                     setIsPaid(currentInvite.is_paid);
                 }
             }
@@ -206,7 +307,7 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   }, []);
 
   // Update content field
-  const updateField = (field: keyof InvitationContent, value: string) => {
+  const updateField = (field: keyof InvitationContent, value: any) => {
     setContent(prev => {
         const newContent = { ...prev, [field]: value };
         return newContent;
@@ -306,9 +407,9 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   };
 
   return (
-    <div className={`flex flex-col lg:flex-row min-h-screen lg:h-screen transition-all duration-500 relative ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-[#FFF9FA]'} lg:overflow-hidden`}>
+    <div className={`flex flex-col lg:flex-row h-screen lg:overflow-hidden transition-all duration-500 relative ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-[#FFF9FA]'}`}>
       {/* Editor Pane */}
-      <div className={`w-full lg:w-[450px] border-r flex flex-col shadow-xl z-20 transition-all duration-500 ${activeTab === 'preview' ? 'hidden lg:flex' : 'flex'} min-h-screen lg:h-full ${
+      <div className={`w-full lg:w-[450px] border-r flex flex-col shadow-xl z-20 transition-all duration-500 ${activeTab === 'preview' ? 'hidden lg:flex' : 'flex'} h-screen ${
           isDarkMode ? 'bg-[#141416] border-white/5' : 'bg-white border-[#FFE4E6]/50'
       }`}>
         <div className={`p-6 border-b sticky top-0 z-30 transition-all duration-500 ${
@@ -403,6 +504,17 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                   }`} 
                 />
               </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-gray-400 uppercase ml-2">Taklif matni</label>
+                <textarea 
+                  rows={3}
+                  value={content.description || ''} 
+                  onChange={(e) => updateField('description', e.target.value)}
+                  className={`w-full px-8 py-5 border border-transparent rounded-[1.5rem] focus:ring-4 focus:ring-[#E11D48]/10 outline-none transition-all text-sm font-bold shadow-inner resize-none ${
+                    isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'
+                  }`} 
+                />
+              </div>
             </div>
           </section>
 
@@ -418,7 +530,7 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                   type="text" 
                   value={content.date || ''} 
                   onChange={(e) => updateField('date', e.target.value)}
-                  placeholder="24 - MAY, 2026"
+                  placeholder="15.05.2026"
                   className={`w-full px-6 py-5 rounded-[1.5rem] text-sm font-bold focus:ring-4 focus:ring-[#E11D48]/10 outline-none ${
                     isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'
                   }`} 
@@ -451,7 +563,6 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                   type="text" 
                   value={content.locationName || ''} 
                   onChange={(e) => updateField('locationName', e.target.value)}
-                  placeholder="Masalan: Tantana Milliy Taomlar"
                   className={`w-full px-8 py-5 border border-transparent rounded-[1.5rem] focus:ring-4 focus:ring-[#E11D48]/10 outline-none transition-all text-sm font-bold ${
                     isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'
                   }`} 
@@ -463,14 +574,13 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                   type="text" 
                   value={content.locationAddress || ''} 
                   onChange={(e) => updateField('locationAddress', e.target.value)}
-                  placeholder="Masalan: Toshkent shahar"
                   className={`w-full px-8 py-5 border border-transparent rounded-[1.5rem] focus:ring-4 focus:ring-[#E11D48]/10 outline-none transition-all text-sm font-bold ${
                     isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'
                   }`} 
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-gray-400 uppercase ml-2">Xarita Havolasi (Google Maps)</label>
+                <label className="text-[10px] font-bold text-gray-400 uppercase ml-2">Xarita Havolasi</label>
                 <input 
                   type="text" 
                   value={content.locationUrl || ''} 
@@ -481,6 +591,45 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                 />
               </div>
             </div>
+          </section>
+
+          {/* Image Section - NEW */}
+          <section className="space-y-6">
+             <h3 className="text-[10px] font-black text-[#E11D48] uppercase tracking-[0.2em] flex items-center gap-2">
+                <ImageIcon size={14} /> Asosiy rasm
+            </h3>
+            <div className={`
+                relative w-full aspect-video rounded-[2rem] overflow-hidden border-2 border-dashed transition-all group
+                ${isDarkMode ? 'bg-white/5 border-white/10 hover:border-[#E11D48]' : 'bg-gray-50 border-gray-200 hover:border-[#E11D48] hover:bg-[#FFF9FA]'}
+            `}>
+                <img 
+                    src={content.imageUrl} 
+                    alt="Preview" 
+                    className={`w-full h-full object-cover transition-all duration-500 ${isImageUploading ? 'opacity-30 blur-sm' : 'opacity-100'}`} 
+                />
+                
+                <label className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer bg-black/40 opacity-0 group-hover:opacity-100 transition-all">
+                    <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
+                    {isImageUploading ? (
+                        <div className="flex flex-col items-center gap-2">
+                            <Loader2 size={24} className="text-white animate-spin" />
+                            <span className="text-[10px] font-bold text-white uppercase tracking-widest">Yuklanmoqda...</span>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center gap-2">
+                            <Upload size={24} className="text-white" />
+                            <span className="text-[10px] font-bold text-white uppercase tracking-widest">Rasmni o'zgartirish</span>
+                        </div>
+                    )}
+                </label>
+
+                {isImageUploading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                         <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                    </div>
+                )}
+            </div>
+            <p className="text-[9px] text-gray-400 font-medium px-2">Eng yaxshi ko'rinish uchun vertikal (portret) rasm yuklang.</p>
           </section>
 
           {/* Music Section - NEW */}
@@ -562,14 +711,40 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                                 <input 
                                     type="file" 
                                     className="hidden" 
-                                    accept="audio/*"
+                                    /* barcha fayllarni ko'rsatish */
                                     onChange={handleMusicUpload}
-                                    disabled={isUploading}
                                 />
                                 {isUploading ? (
                                     <div className="flex flex-col items-center gap-3">
                                         <Loader2 size={32} className="text-[#E11D48] animate-spin" />
                                         <p className="text-[10px] font-black uppercase text-[#E11D48] tracking-widest animate-pulse">Yuklanmoqda...</p>
+                                    </div>
+                                ) : selectedMusicName ? (
+                                    <div className="flex flex-col items-center gap-3 text-center px-4">
+                                        <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-500 mb-1">
+                                            <CheckCircle size={24} />
+                                        </div>
+                                        <div className="flex items-center gap-3 bg-white/5 p-3 rounded-2xl w-full justify-between mt-2">
+                                          <div className="flex items-center gap-2">
+                                            <div className="p-2 bg-[#E11D48]/10 rounded-lg text-[#E11D48]">
+                                              {isAudioMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                                            </div>
+                                            <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">Ovozni tekshirish</span>
+                                          </div>
+                                          <button 
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              setIsAudioMuted(!isAudioMuted);
+                                            }}
+                                            className={`relative w-10 h-5 rounded-full transition-all duration-300 focus:outline-none ${
+                                              !isAudioMuted ? 'bg-[#E11D48]' : 'bg-gray-600'
+                                            }`}
+                                          >
+                                            <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all duration-300 ${
+                                              !isAudioMuted ? 'left-6' : 'left-1'
+                                            }`} />
+                                          </button>
+                                        </div>
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
@@ -591,43 +766,64 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
 
           {/* Card Info - NEW SECTION */}
           <section className="space-y-6 pb-20">
-             <h3 className="text-[10px] font-black text-[#E11D48] uppercase tracking-[0.2em] flex items-center gap-2">
-                <CreditCard size={14} /> To'yona uchun Karta raqami
-            </h3>
-            <div className={`space-y-5 p-8 rounded-[2.5rem] border ring-1 transition-all ${
-                isDarkMode ? 'bg-[#1E1E22] border-white/5 ring-white/5' : 'bg-[#FFF1F2] border-[#FFE4E6] ring-[#FFE4E6]'
-            }`}>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-gray-500 uppercase ml-2">Karta raqami</label>
-                <input 
-                  type="text" 
-                  value={content.cardNumber || ''} 
-                  onChange={(e) => {
-                      const v = e.target.value.replace(/\D/g, '');
-                      const chunks = v.match(/.{1,4}/g);
-                      updateField('cardNumber', chunks ? chunks.join(' ') : v);
-                  }}
-                  maxLength={19}
-                  placeholder="8600 0000 0000 0000"
-                  className={`w-full px-8 py-5 border rounded-2xl focus:ring-4 focus:ring-[#E11D48]/10 outline-none text-sm font-mono tracking-widest shadow-sm ${
-                    isDarkMode ? 'bg-white/5 border-white/5 text-white' : 'bg-white border-gray-100 text-gray-900'
-                  }`} 
-                />
+             <div className="flex items-center justify-between">
+                <h3 className="text-[10px] font-black text-[#E11D48] uppercase tracking-[0.2em] flex items-center gap-2">
+                    <CreditCard size={14} /> To'yona uchun Karta raqami
+                </h3>
+                <button 
+                  onClick={() => updateField('showGift', !content.showGift)}
+                  className={`relative w-10 h-5 rounded-full transition-all duration-300 focus:outline-none ${
+                    content.showGift ? 'bg-[#E11D48]' : 'bg-gray-600'
+                  }`}
+                >
+                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all duration-300 ${
+                    content.showGift ? 'left-6' : 'left-1'
+                  }`} />
+                </button>
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-gray-500 uppercase ml-2">Karta egasining Ismi</label>
-                <input 
-                  type="text" 
-                  value={content.cardName || ''} 
-                  onChange={(e) => updateField('cardName', e.target.value)}
-                  placeholder="MUROD PRIQULOV"
-                  className={`w-full px-8 py-5 border rounded-2xl focus:ring-4 focus:ring-[#E11D48]/10 outline-none text-sm font-bold uppercase shadow-sm ${
-                    isDarkMode ? 'bg-white/5 border-white/5 text-white' : 'bg-white border-gray-100 text-gray-900'
-                  }`} 
-                />
-              </div>
-              <p className="text-[9px] text-gray-400 italic px-2">Karta ma'lumotlari taklifnomaning sovg'alar bo'limida ko'rinadi.</p>
-            </div>
+
+             <AnimatePresence>
+                {content.showGift && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className={`p-8 rounded-[2.5rem] border-2 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-[#FFE4E6]'} space-y-8`}>
+                        <div className="space-y-4">
+                            <label className="text-[9px] font-black text-gray-400 uppercase ml-2 tracking-widest leading-none">Karta raqami</label>
+                            <input 
+                                type="text" 
+                                value={content.cardNumber || ''}
+                                onChange={(e) => {
+                                    const raw = e.target.value.replace(/\s/g, '');
+                                    if (raw.length <= 16) {
+                                        const formatted = raw.match(/.{1,4}/g)?.join(' ') || raw;
+                                        updateField('cardNumber', formatted);
+                                    }
+                                }}
+                                className={`w-full px-8 py-5 rounded-[2rem] border-2 transition-all outline-none text-center text-lg font-black tracking-[0.2em] ${isDarkMode ? 'bg-white/10 border-white/10 text-white focus:border-[#E11D48]' : 'bg-gray-50 border-gray-100 text-gray-900 focus:border-[#E11D48]'}`}
+                                placeholder="8600 **** **** ****"
+                            />
+                        </div>
+
+                        <div className="space-y-4">
+                            <label className="text-[9px] font-black text-gray-400 uppercase ml-2 tracking-widest leading-none">Karta egasining ismi</label>
+                            <input 
+                                type="text" 
+                                value={content.cardName || ''}
+                                onChange={(e) => updateField('cardName', e.target.value)}
+                                className={`w-full px-8 py-5 rounded-[2rem] border-2 transition-all outline-none text-center text-sm font-black uppercase tracking-widest ${isDarkMode ? 'bg-white/10 border-white/10 text-white focus:border-[#E11D48]' : 'bg-gray-50 border-gray-100 text-gray-900 focus:border-[#E11D48]'}`}
+                                placeholder="ISM FAMILIYA"
+                            />
+                        </div>
+
+                        <p className="text-[10px] text-gray-400 text-center italic font-medium">Karta ma'lumotlari taklifnomaning sovg'alar bo'limida ko'rinadi.</p>
+                    </div>
+                  </motion.div>
+                )}
+             </AnimatePresence>
           </section>
         </div>
 
@@ -646,14 +842,14 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Expert Preview Pane */}
-      <div className={`flex-1 flex items-center justify-center overflow-x-hidden transition-all duration-500 ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'} min-h-screen lg:min-h-0 relative ${
+       <div className={`flex-1 flex items-center justify-center overflow-x-hidden transition-all duration-500 ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'} h-screen relative pt-12 pb-24 ${
           isDarkMode ? 'bg-[#0F0F11]' : 'bg-gray-50'
       }`}>
         <div className={`absolute inset-0 opacity-40 ${isDarkMode ? 'bg-[radial-gradient(circle_at_50%_40%,#E11D48_0%,transparent_60%)]' : 'bg-[radial-gradient(circle_at_50%_40%,#FFE4E6_0%,transparent_60%)]'}`}></div>
         
         {/* Mobile View: No Frame, Full Height */}
-        <div className="lg:hidden w-full h-full relative z-10 overflow-y-auto">
-             <TemplatePreview content={content} />
+        <div className="lg:hidden w-full h-full relative z-10 overflow-y-auto scroll-smooth">
+             <TemplatePreview content={content} isMuted={isAudioMuted} />
         </div>
 
         {/* Desktop View: With Device Frame */}
@@ -672,8 +868,8 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                 </div>
                 
                 {/* Screen Content */}
-                <div className="w-full h-full bg-white rounded-[2.8rem] overflow-hidden relative shadow-inner">
-                    <TemplatePreview content={content} />
+                <div className="w-full h-full bg-white rounded-[2.8rem] overflow-y-auto relative shadow-inner no-scrollbar scroll-smooth">
+                    <TemplatePreview content={content} isMuted={isAudioMuted} />
                     
                     {/* Floating Status */}
                     <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[150]">
@@ -727,7 +923,18 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Hidden Audio for Previewing */}
-      <audio id="preview-audio" className="hidden" />
+      <audio id="preview-audio" className="hidden" muted={isAudioMuted} />
+
+      <div className="fixed bottom-24 right-8 z-[200] flex flex-col gap-3">
+          <button 
+            onClick={() => setIsAudioMuted(!isAudioMuted)}
+            className={`w-12 h-12 rounded-full shadow-2xl flex items-center justify-center transition-all ${
+              isAudioMuted ? 'bg-gray-800 text-white' : 'bg-[#E11D48] text-white animate-pulse'
+            }`}
+          >
+            {isAudioMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+          </button>
+      </div>
 
       {/* Success/Payment Modal */}
       <PaymentModal 

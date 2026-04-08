@@ -16,6 +16,7 @@ interface GoldWhiteInvitationProps {
   musicUrl?: string;
   cardNumber?: string;
   cardName?: string;
+  isPreview?: boolean;
 }
 
 const goldText = "bg-clip-text text-transparent bg-gradient-to-b from-[#B8860B] via-[#FFD700] to-[#B8860B]";
@@ -32,7 +33,8 @@ export default function GoldWhiteInvitation({
   imageUrl = "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
   musicUrl = "/assets/die_with_a_smile.mp3",
   cardNumber = "9860 6004 0356 5382",
-  cardName = "Kenjabek"
+  cardName = "Kenjabek",
+  isPreview = false
 }: GoldWhiteInvitationProps) {
   const [isOpened, setIsOpened] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -49,10 +51,11 @@ export default function GoldWhiteInvitation({
   }, [musicUrl]);
 
   useEffect(() => {
+    if (isPreview) return;
     if (!isOpened) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isOpened]);
+  }, [isOpened, isPreview]);
 
   const handleOpen = () => {
     setIsOpened(true);

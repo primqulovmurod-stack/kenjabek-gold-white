@@ -12,6 +12,8 @@ export interface InvitationContent {
   locationAddress?: string;
   cardName?: string;
   cardNumber?: string;
+  showGift?: boolean;
+  description?: string;
 }
 
 export interface Invitation {

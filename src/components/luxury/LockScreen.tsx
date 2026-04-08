@@ -16,7 +16,7 @@ export function LockScreen({ onUnlock }: LockScreenProps) {
         y: "-100%", 
         transition: { duration: 0.8, ease: "easeInOut" } 
       }}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white text-[#0F172A] font-sans selection:bg-purple-200"
+      className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white text-[#0F172A] font-sans selection:bg-purple-200"
     >
       {/* Decorative Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

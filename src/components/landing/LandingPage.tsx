@@ -161,68 +161,10 @@ const LandingPage = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                   {[
-                    { 
-                        title: 'Rolex Luxury Edition', 
-                        style: 'Zamonaviy, Rolex', 
-                        link: 'https://xurshid-mohinur-rolex.vercel.app/'
-                    },
-                    { 
-                        title: 'Pink Romance Edition', 
-                        style: 'Nozik, Pushti', 
-                        link: 'https://xurshid-mohinur-pink.vercel.app/'
-                    },
-                    { 
-                        title: 'Gold & White Classic', 
-                        style: 'Elegant, Oq-Oltin', 
-                        link: 'https://kenjabek-gold-white.vercel.app/'
-                    },
-                   ].map((sample, i) => (
-                    <motion.div 
-                        key={i}
-                        whileHover={{ y: -10 }}
-                        className="group relative h-[720px] rounded-[3.5rem] overflow-hidden border-8 border-gray-950 dark:border-white/10 shadow-2xl bg-black transition-all ring-1 ring-white/10"
-                    >
-                        {/* Interactive Preview Container - PERFECT CENTERED */}
-                        <div className="absolute inset-0 w-full h-full overflow-y-auto no-scrollbar bg-white">
-                            <iframe 
-                                src={sample.link} 
-                                className="w-[400px] h-[800px] border-none origin-top-left"
-                                style={{ 
-                                    transform: 'scale(0.9)', 
-                                    marginLeft: '-12.5px', // Fine-tune centering
-                                    marginTop: '-40px'     // Shift up to center the core content
-                                }}
-                                title={sample.title}
-                                loading="lazy"
-                            ></iframe>
-                            
-                            {/* Overlay that allows scrolling but captures initial focus */}
-                            <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:from-black/60 transition-all"></div>
-                        </div>
-
-                        {/* Card Info Overlay - Balanced for centering */}
-                        <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col items-center text-center z-20 pointer-events-none group-hover:translate-y-1 transition-transform duration-500">
-                            <div className="w-full transform group-hover:scale-105 transition-all">
-                                <h3 className="font-playfair text-xl font-black mb-1 text-white uppercase tracking-tight drop-shadow-lg">{sample.title}</h3>
-                                <p className="text-[#E11D48] text-[9px] font-black mb-6 uppercase tracking-[0.3em] drop-shadow-md">{sample.style}</p>
-                                <a 
-                                    href={sample.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#E11D48] text-white rounded-full text-[9px] font-black shadow-2xl hover:bg-white hover:text-[#E11D48] transition-all uppercase tracking-widest pointer-events-auto ring-4 ring-[#E11D48]/20"
-                                >
-                                    TO'LIQ KO'RISH <ExternalLink size={14} />
-                                </a>
-                            </div>
-                        </div>
-                        
-                        {/* Device Top Bar Mock */}
-                        <div className="absolute top-0 inset-x-0 h-8 flex items-center justify-center z-30 pointer-events-none">
-                            <div className="w-24 h-5 bg-black rounded-b-2xl shadow-inner border-x border-b border-white/5"></div>
-                        </div>
-                    </motion.div>
-                ))}
+                {/* Namunalar bo'limi bo'shatildi */}
+                <div className="col-span-full py-20 text-center">
+                    <p className="text-gray-400 font-bold uppercase tracking-widest italic">Yangi premium shablonlar tez kunda...</p>
+                </div>
             </div>
         </section>
 
