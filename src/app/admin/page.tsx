@@ -94,25 +94,27 @@ export default function AdminPanel() {
         const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
         
         if (!isPlaceholder) {
-            const { error } = await supabase
-                .from('invitations')
-                .update({ is_paid: newStatus })
-                .eq('id', id);
-            
-            if (error) {
-                console.error('SUPABASE UPDATE ERROR:', error);
-                
-                // Detailed alert for debugging
-                let msg = "Statusni o'zgartirib bo'lmadi.";
-                if (error.message?.includes('RLS') || error.code === '42501') {
-                    msg = "Xatolik: RLS Policy ruxsat bermayapti. Supabase'da 'invitations' jadvali uchun UPDATE huquqini (public) bering.";
-                }
-                alert(msg + "\n" + error.message);
+            console.log('Attempting to toggle status via API:', id);
+            const response = await fetch('/api/admin/toggle-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Taklifnoma2026!'
+                },
+                body: JSON.stringify({ id, isPaid: newStatus })
+            });
 
-                // 2. Revert UI if DB failed
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('TOGGLE API ERROR:', error);
+                alert("Statusni yangilab bo'lmadi: " + (error.error || response.statusText));
+                
+                // Revert UI if DB failed
                 setInvitations(prev => prev.map(inv => 
                     inv.id === id ? { ...inv, is_paid: currentStatus } : inv
                 ));
+            } else {
+                console.log('Status toggle successful via API');
             }
         } else {
             // Placeholder/LocalStorage updates
@@ -141,18 +143,21 @@ export default function AdminPanel() {
             const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
             
             if (!isPlaceholder) {
-                console.log('Attempting to delete invitation:', id);
-                const { error } = await supabase.from('invitations').delete().eq('id', id);
-                if (error) {
-                    console.error('DELETE ERROR:', error);
-                    let msg = "O'chirib bo'lmadi: " + error.message;
-                    if (error.message?.includes('RLS') || error.code === '42501') {
-                        msg = "Xatolik: DELETE huquqi yo'q. Supabase'da 'invitations' jadvali uchun DELETE ruxsatini (public) bering.";
+                console.log('Attempting to delete invitation via API:', id);
+                const response = await fetch(`/api/admin/delete?id=${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Taklifnoma2026!'
                     }
-                    alert(msg);
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    console.error('DELETE API ERROR:', error);
+                    alert("O'chirib bo'lmadi: " + (error.error || response.statusText));
                     setInvitations(original);
                 } else {
-                    console.log('Delete successful');
+                    console.log('Delete successful via API');
                 }
             } else {
                 const localData = localStorage.getItem('taklifnoma_invitations');
