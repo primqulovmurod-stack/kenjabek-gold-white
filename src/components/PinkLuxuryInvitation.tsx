@@ -72,6 +72,8 @@ export default function PinkLuxuryInvitation({
       <AnimatePresence>
         {!isUnlocked && (
           <LockScreen 
+            groomName={groomName}
+            brideName={brideName}
             onUnlock={() => {
               setIsUnlocked(true);
               // Sahifani eng tepaga qaytarish

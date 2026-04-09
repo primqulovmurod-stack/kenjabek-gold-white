@@ -5,9 +5,15 @@ import { motion } from 'framer-motion';
 
 interface LockScreenProps {
   onUnlock: () => void;
+  groomName: string;
+  brideName: string;
 }
 
-export function LockScreen({ onUnlock }: LockScreenProps) {
+export function LockScreen({ onUnlock, groomName, brideName }: LockScreenProps) {
+  const getInitial = (name: string) => {
+    return name && name.length > 0 ? name[0].toUpperCase() : '';
+  };
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
@@ -39,7 +45,7 @@ export function LockScreen({ onUnlock }: LockScreenProps) {
               className="text-4xl text-[#7E22CE] leading-none tracking-widest flex items-center justify-center italic"
               style={{ fontFamily: 'var(--font-cormorant)' }}
             >
-              X<span className="text-purple-300 font-light text-xl mx-0.5" style={{ fontFamily: 'var(--font-playfair)' }}>&amp;</span>M
+              {getInitial(groomName)}<span className="text-purple-300 font-light text-xl mx-0.5" style={{ fontFamily: 'var(--font-playfair)' }}>&amp;</span>{getInitial(brideName)}
             </span>
             <span className="text-purple-300 text-[10px] mt-1 opacity-80 rotate-180">⚜</span>
           </div>
