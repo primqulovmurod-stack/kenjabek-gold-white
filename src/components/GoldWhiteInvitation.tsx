@@ -215,7 +215,9 @@ export default function GoldWhiteInvitation({
               </div>
               
               <div className="space-y-8">
-                <p className="text-[11px] tracking-[0.8em] uppercase font-bold text-[#D4AF37]/80">TO'YIMIZGA TAKLIF ETAMIZ</p>
+                <p className="text-[11px] tracking-[0.8em] uppercase font-bold text-[#D4AF37]/80">
+                  {isRussian ? "ПРИГЛАШАЕМ НА СВАДЬБУ" : "TO'YIMIZGA TAKLIF ETAMIZ"}
+                </p>
                 <GoldOrnament className="py-2" />
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
