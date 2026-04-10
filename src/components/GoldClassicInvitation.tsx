@@ -125,26 +125,39 @@ export default function GoldClassicInvitation({
 
   const monthMap: { [key: string]: number } = {
     "YANVAR": 0, "FEVRAL": 1, "MART": 2, "APREL": 3, "MAY": 4, "IYUN": 5,
-    "IYUL": 6, "AVGUST": 7, "SENTYABR": 8, "OKTYABR": 9, "NOYABR": 10, "DEKABR": 11
+    "IYUL": 6, "AVGUST": 7, "SENTYABR": 8, "OKTYABR": 9, "NOYABR": 10, "DEKABR": 11,
+    "ЯНВАРЬ": 0, "ФЕВРАЛЬ": 1, "МАРТ": 2, "АПРЕЛЬ": 3, "МАЙ": 4, "ИЮНЬ": 5,
+    "ИЮЛЬ": 6, "АВГУСТ": 7, "СЕНТЯБРЬ": 8, "ОКТЯБРЬ": 9, "НОЯБРЬ": 10, "ДЕКАБРЬ": 11
   };
 
-  const targetDate = new Date(
+  const isRussian = typeof window !== 'undefined' && (
+    window.location.hostname.includes('rus') || 
+    monthName.toUpperCase().match(/[А-Я]/)
+  );
+
+  const weekDaysUz = ["YAKSHANBA", "DUSHANBA", "SESHANBA", "CHORSHANBA", "PAYSHANBA", "JUMA", "SHANBA"];
+  const weekDaysRu = ["ВОСКРЕСЕНЬЕ", "ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА"];
+  
+  const targetDateObj = new Date(
     parseInt(year),
-    monthMap[monthName.toUpperCase()] || 3,
+    monthMap[monthName.toUpperCase()] !== undefined ? monthMap[monthName.toUpperCase()] : 3,
     day,
     parseInt(time.split(':')[0]) || 19,
     parseInt(time.split(':')[1]) || 0
-  ).toISOString();
+  );
+
+  const targetDate = targetDateObj.toISOString();
+  const dayOfWeek = isRussian ? weekDaysRu[targetDateObj.getDay()] : weekDaysUz[targetDateObj.getDay()];
 
   const firstDayOfMonth = new Date(
     parseInt(year),
-    monthMap[monthName.toUpperCase()] || 3,
+    monthMap[monthName.toUpperCase()] !== undefined ? monthMap[monthName.toUpperCase()] : 3,
     1
   ).getDay();
 
   const daysInMonth = new Date(
     parseInt(year),
-    (monthMap[monthName.toUpperCase()] || 3) + 1,
+    (monthMap[monthName.toUpperCase()] !== undefined ? monthMap[monthName.toUpperCase()] : 3) + 1,
     0
   ).getDate();
 
@@ -227,8 +240,8 @@ export default function GoldClassicInvitation({
                         </div>
 
                         <div className="space-y-3 flex flex-col items-center">
-                            <span className="text-[13px] font-bold tracking-[0.6em] text-[#D4AF37] uppercase group-hover:tracking-[0.8em] transition-all duration-700">
-                                TAKLIFNOMANI OCHISH
+                             <span className="text-[13px] font-bold tracking-[0.6em] text-[#D4AF37] uppercase group-hover:tracking-[0.8em] transition-all duration-700">
+                                {isRussian ? "ОТКРЫТЬ ПРИГЛАШЕНИЕ" : "TAKLIFNOMANI OCHISH"}
                             </span>
                             <div className="h-[0.5px] w-12 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-center" />
                         </div>
@@ -268,7 +281,7 @@ export default function GoldClassicInvitation({
 
             <div className="pt-8 md:pt-16 pb-10">
                 <div className="inline-block relative px-8 md:px-12 py-3 md:py-6 border-y border-[#D4AF37]/20">
-                    <p className={`text-xl md:text-4xl font-serif tracking-[0.4em] md:tracking-[0.6em] uppercase ${goldText} font-bold`}>{date}</p>
+                    <p className={`text-xl md:text-4xl font-serif tracking-[0.4em] md:tracking-[0.6em] uppercase ${goldText} font-bold`}>{date.split(',')[0]}, {dayOfWeek}</p>
                 </div>
             </div>
           </motion.div>
@@ -359,8 +372,8 @@ export default function GoldClassicInvitation({
                     <div className="w-20 h-px bg-[#D4AF37]/30 mx-auto" />
                     
                     <p className="text-xl md:text-2xl text-[#D4AF37] font-serif italic tracking-wide">
-                        {date}, JUMA <br />
-                        <span className="text-[#D4AF37] font-bold mt-2 inline-block uppercase">VAQT {time}</span>
+                        {date.split(',')[0]}, {dayOfWeek} <br />
+                        <span className="text-[#D4AF37] font-bold mt-2 inline-block uppercase">{isRussian ? "ВРЕМЯ" : "VAQT"} {time}</span>
                     </p>
                 </div>
 
