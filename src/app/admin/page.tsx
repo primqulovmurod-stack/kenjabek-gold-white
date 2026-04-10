@@ -322,11 +322,11 @@ export default function AdminPanel() {
                         ) : filtered.map((inv, index) => (
                             <tr key={inv.id} className="hover:bg-white/5 transition-colors group">
                                 <td className="px-6 py-6 whitespace-nowrap">
-                                    <span className="text-xs font-black text-gray-600">#{index + 1}</span>
+                                    <span className="text-xs font-black text-gray-600">{index + 1}</span>
                                 </td>
                                 <td className="px-6 py-6 whitespace-nowrap">
                                     <div className="space-y-1">
-                                        <p className="font-mono text-[9px] font-bold text-gray-500 uppercase tracking-tighter">#{inv.id.slice(0,8)}</p>
+                                        <p className="font-mono text-[9px] font-bold text-gray-500 uppercase tracking-tighter">{inv.id.slice(0,8)}</p>
                                         <a 
                                             href={`/${inv.slug}`}
                                             target="_blank"
