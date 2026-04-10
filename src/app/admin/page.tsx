@@ -162,47 +162,46 @@ export default function AdminPanel() {
   };
 
   const deleteInvite = async (id: string) => {
-    if (!confirm("Ushbu taklifnomani butunlay o'chirib tashlamoqchimisiz?")) return;
+    if (!id) return;
+    
+    if (!window.confirm("Ushbu taklifnomani butunlay o'chirib tashlamoqchimisiz?")) return;
     
     const original = [...invitations];
     try {
-            setInvitations(prev => prev.filter(inv => inv.id !== id));
-            
-            console.log('Attempting to delete invitation via API:', id);
-            const response = await fetch(`/api/admin/delete?id=${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Taklifnoma2026!'
-                }
-            });
+        console.log('Initiating deletion for ID:', id);
+        // Optimistic UI update
+        setInvitations(prev => prev.filter(inv => inv.id !== id));
+        
+        const response = await fetch(`/api/admin/delete?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Taklifnoma2026!'
+            }
+        });
 
-            if (!response.ok) {
-                const error = await response.json();
-                console.error('DELETE API ERROR:', error);
-                
-                // Backup: Direct delete
-                const { error: dbError } = await supabase.from('invitations').delete().eq('id', id);
-                
-                if (dbError) {
-                    alert("O'chirib bo'lmadi! API va DB xatosi: " + dbError.message);
-                    setInvitations(original);
-                }
-            } else {
-                console.log('Delete successful via API');
-            }
-            
-            // Sync local storage
-            const localData = localStorage.getItem('taklifnoma_invitations');
-            if (localData) {
-                let invites = JSON.parse(localData);
-                invites = invites.filter((inv: any) => inv.id !== id);
-                localStorage.setItem('taklifnoma_invitations', JSON.stringify(invites));
-            }
-        } catch (err: any) {
-            console.error('Delete error:', err);
-            setInvitations(original);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Server error');
         }
-    };
+        
+        console.log('Successfully deleted via API:', id);
+        
+        // Final sync: also try to delete from local storage for redundancy
+        const localData = localStorage.getItem('taklifnoma_invitations');
+        if (localData) {
+            const parsed = JSON.parse(localData).filter((inv: any) => inv.id !== id);
+            localStorage.setItem('taklifnoma_invitations', JSON.stringify(parsed));
+        }
+
+        alert("Taklifnoma o'chirildi! ✅");
+    } catch (err: any) {
+        console.error('Delete operation failed:', err);
+        alert(`O'chirishda xatolik: ${err.message} ❌`);
+        // Revert UI on failure
+        setInvitations(original);
+    }
+  };
 
   const filtered = invitations.filter(inv => 
     inv.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -391,9 +390,10 @@ export default function AdminPanel() {
                                         </button>
                                         <button 
                                           onClick={() => deleteInvite(inv.id)}
-                                          className="p-2.5 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                                          className="p-3 text-gray-400 hover:text-white hover:bg-red-500 rounded-xl transition-all shadow-sm hover:shadow-red-500/20"
+                                          title="O'chirish"
                                         >
-                                            <Trash2 size={16} />
+                                            <Trash2 size={18} />
                                         </button>
                                     </div>
                                 </td>
