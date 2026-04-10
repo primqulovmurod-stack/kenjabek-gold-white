@@ -326,14 +326,14 @@ export default function AdminPanel() {
                                 </td>
                                 <td className="px-6 py-6 whitespace-nowrap">
                                     <div className="space-y-1">
-                                        <p className="font-mono text-[9px] font-bold text-gray-500 uppercase tracking-tighter">{inv.id.slice(0,8)}</p>
+                                        <p className="font-mono text-[9px] font-bold text-gray-500 uppercase tracking-tighter">{inv.id}</p>
                                         <a 
                                             href={`/${inv.slug}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-[13px] font-black text-[#E11D48] flex items-center gap-2 hover:text-[#BE123C] transition-all max-w-[120px] truncate"
+                                            className="text-[13px] font-black text-[#E11D48] flex items-center gap-2 hover:text-[#BE123C] transition-all"
                                         >
-                                            <span className="truncate">{inv.slug}</span>
+                                            <span>{inv.slug}</span>
                                             <ExternalLink size={12} className="flex-shrink-0" />
                                         </a>
                                     </div>
