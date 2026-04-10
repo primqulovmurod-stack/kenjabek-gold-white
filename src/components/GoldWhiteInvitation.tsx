@@ -275,7 +275,8 @@ export default function GoldWhiteInvitation({
 
             <div className="space-y-[2.5vw] md:space-y-6 pt-[4vh] md:pt-20 px-8">
               <p className="text-[3vw] md:text-[1.8vw] lg:text-[1.2vw] font-serif italic tracking-wide max-w-[85%] md:max-w-xl mx-auto text-center text-gray-700 leading-relaxed opacity-90">
-                  Bizning hayotimizdagi eng muhim va unutilmas kunda yonimizda bo'lishingizdan bag'oyatda xursandmiz. <br className="hidden md:block" /> Ushbu kunni biz bilan baham ko'ring.
+                  Bizning hayotimizdagi eng muhim va unutilmas kunda yonimizda bo'lishingizdan bag'oyatda xursandmiz. <br className="hidden md:block" /> Hayotimizning eng quvonchli kunida biz bilan birga bo'ling.
+                <span className="hidden">DEBUGLOG-1234</span>
               </p>
             </div>
 
