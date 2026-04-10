@@ -173,6 +173,9 @@ export default function AdminPanel() {
     console.log('User clicked delete for ID:', id);
     
     if (!window.confirm(`ID: ${id}\n\nUshbu taklifnomani butunlay o'chirib tashlamoqchimisiz?`)) return;
+    
+    const original = [...invitations];
+    try {
         // Optimistic UI update
         setInvitations(prev => prev.filter(inv => inv.id !== id));
         
