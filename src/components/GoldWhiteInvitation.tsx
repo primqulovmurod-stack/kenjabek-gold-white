@@ -161,6 +161,10 @@ export default function GoldWhiteInvitation({
     0
   ).getDate();
 
+  const displayGroom = isRussian && groomName === "Kenjabek" ? "Кенжабек" : groomName;
+  const displayBride = isRussian && brideName === "Snejana" ? "Снежана" : brideName;
+  const sep = isRussian ? <span className="not-italic font-sans px-2">и</span> : "va";
+
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden selection:bg-[#D4AF37]/20 relative">
       <audio ref={audioRef} src={musicUrl} loop />
@@ -201,7 +205,7 @@ export default function GoldWhiteInvitation({
                          style={{ borderStyle: 'dashed' }} />
                     <div className="w-[105%] h-[105%] border border-[#D4AF37]/50 rounded-full absolute" />
                     <h1 className={`text-5xl md:text-7xl font-serif italic ${goldText}`}>
-                        {groomName[0]} <span className="text-3xl md:text-4xl align-middle font-serif">&</span> {brideName[0]}
+                        {displayGroom[0]} <span className="text-3xl md:text-4xl align-middle font-serif">&</span> {displayBride[0]}
                     </h1>
                     
                     <motion.div 
@@ -272,11 +276,11 @@ export default function GoldWhiteInvitation({
             </div>
 
             <h1 className="flex flex-col items-center justify-center gap-[1.5vw] md:gap-[3vw] w-full px-4 pt-[4vh] md:pt-20">
-              <span className={`text-[9vw] md:text-[6vw] lg:text-[5vw] font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-none text-center w-full break-words px-4`}>{groomName}</span>
+              <span className={`text-[9vw] md:text-[6vw] lg:text-[5vw] font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-none text-center w-full break-words px-4`}>{displayGroom}</span>
               <span className="text-serif italic text-[4vw] md:text-[2.5vw] text-gray-400 align-middle py-1">
-                {isRussian ? "и" : "va"}
+                {sep}
               </span>
-              <span className={`text-[9vw] md:text-[6vw] lg:text-[5vw] font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-none text-center w-full break-words px-4`}>{brideName}</span>
+              <span className={`text-[9vw] md:text-[6vw] lg:text-[5vw] font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-none text-center w-full break-words px-4`}>{displayBride}</span>
             </h1>
 
             <div className="space-y-[2.5vw] md:space-y-6 pt-[4vh] md:pt-20 px-8">
@@ -512,8 +516,10 @@ export default function GoldWhiteInvitation({
                <p className="text-xl md:text-2xl font-serif italic text-gray-300">
                   {isRussian ? "С благодарностью и любовью," : "Minnatdorchilik va sevgi bilan,"}
                </p>
-               <div className={`text-3xl sm:text-4xl md:text-8xl font-serif italic drop-shadow-[0_0_40px_rgba(212,175,55,0.1)] ${goldText} leading-tight px-4`}>
-                  {groomName} {isRussian ? "и" : "va"} {brideName}
+               <div className={`text-3xl sm:text-4xl md:text-8xl font-serif italic drop-shadow-[0_0_40px_rgba(212,175,55,0.1)] ${goldText} leading-tight px-4 flex items-center justify-center gap-2 flex-wrap`}>
+                  <span>{displayGroom}</span> 
+                  <span className="text-2xl sm:text-3xl md:text-6xl text-gray-300">{sep}</span> 
+                  <span>{displayBride}</span>
                </div>
             </div>
             

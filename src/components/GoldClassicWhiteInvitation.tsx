@@ -97,6 +97,10 @@ export default function GoldClassicWhiteInvitation({
 
   const dayOfWeek = isRussian ? weekDaysRu[targetDateObj.getDay()] : weekDaysUz[targetDateObj.getDay()];
 
+  const displayGroom = isRussian && groomName === "Kenjabek" ? "Кенжабек" : groomName;
+  const displayBride = isRussian && brideName === "Snejana" ? "Снежана" : (isRussian && brideName === "Safiya" ? "Сафия" : brideName);
+  const sep = isRussian ? <span className="font-sans not-italic font-normal px-1">и</span> : "va";
+
   return (
     <div className={`min-h-screen bg-white text-[#1A1A1A] font-sans relative flex justify-center ${isPreview ? 'h-full overflow-hidden' : (isOpened ? '' : 'h-screen overflow-hidden')}`}>
       <div className={`w-full max-w-[500px] bg-white relative shadow-2xl ${isPreview ? 'h-full' : (isOpened ? 'min-h-screen' : 'h-screen overflow-hidden')}`}>
@@ -117,9 +121,9 @@ export default function GoldClassicWhiteInvitation({
 
                 <div className="space-y-6">
                     <h1 className="flex flex-col items-center gap-4">
-                        <span className={`text-4xl md:text-5xl font-serif italic ${goldText}`}>{groomName || "Kuyov"}</span>
+                        <span className={`text-4xl md:text-5xl font-serif italic ${goldText}`}>{displayGroom || (isRussian ? "Жених" : "Kuyov")}</span>
                         <span className="text-xl md:text-2xl text-black/10 font-serif italic">&</span>
-                        <span className={`text-4xl md:text-5xl font-serif italic ${goldText}`}>{brideName || "Kelin"}</span>
+                        <span className={`text-4xl md:text-5xl font-serif italic ${goldText}`}>{displayBride || (isRussian ? "Невеста" : "Kelin")}</span>
                     </h1>
                     <div className="w-12 h-px bg-[#D4AF37]/30 mx-auto" />
                     <p className="text-[11px] md:text-xs text-black/40 font-serif italic px-8 leading-relaxed max-w-xs mx-auto">
@@ -166,9 +170,9 @@ export default function GoldClassicWhiteInvitation({
 
           <section className={`relative ${isPreview ? 'min-h-[600px]' : 'min-h-screen'} flex flex-col items-center justify-center text-center space-y-12 py-20`}>
             <h1 className="flex flex-col items-center gap-6">
-              <span className={`text-5xl md:text-6xl font-serif italic ${goldText}`}>{groomName || (isRussian ? "Жених" : "Kuyov")}</span>
-              <span className="text-2xl md:text-3xl text-black/20">{isRussian ? "и" : "va"}</span>
-              <span className={`text-5xl md:text-6xl font-serif italic ${goldText}`}>{brideName || (isRussian ? "Невеста" : "Kelin")}</span>
+              <span className={`text-5xl md:text-6xl font-serif italic ${goldText}`}>{displayGroom || (isRussian ? "Жених" : "Kuyov")}</span>
+              <span className="text-2xl md:text-3xl text-black/40">{sep}</span>
+              <span className={`text-5xl md:text-6xl font-serif italic ${goldText}`}>{displayBride || (isRussian ? "Невеста" : "Kelin")}</span>
             </h1>
             <div className="w-12 h-px bg-[#D4AF37]/40 mx-auto" />
             <p className={`text-[13px] md:text-base font-serif italic text-black/70 whitespace-pre-line break-words px-2 max-w-[95%] mx-auto leading-relaxed tracking-tight`}>

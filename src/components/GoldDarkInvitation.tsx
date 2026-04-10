@@ -157,6 +157,10 @@ export default function GoldDarkInvitation({
     0
   ).getDate();
 
+  const displayGroom = isRussian && groomName === "Kenjabek" ? "Кенжабек" : groomName;
+  const displayBride = isRussian && brideName === "Snejana" ? "Снежана" : (isRussian && brideName === "Safiya" ? "Сафия" : brideName);
+  const sep = isRussian ? <span className="font-sans not-italic font-normal px-1">и</span> : "va";
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden selection:bg-[#D4AF37]/20 relative">
       <audio ref={audioRef} src={musicUrl} loop />
@@ -197,7 +201,7 @@ export default function GoldDarkInvitation({
                          style={{ borderStyle: 'dashed' }} />
                     <div className="w-[105%] h-[105%] border border-[#D4AF37]/50 rounded-full absolute" />
                     <h1 className={`text-5xl md:text-7xl font-serif italic ${goldText}`}>
-                        {groomName[0]} <span className="text-3xl md:text-4xl align-middle font-serif">&</span> {brideName[0]}
+                        {displayGroom[0]} <span className="text-3xl md:text-4xl align-middle font-serif">&</span> {displayBride[0]}
                     </h1>
                     
                     <motion.div 
@@ -268,11 +272,11 @@ export default function GoldDarkInvitation({
             </div>
 
             <h1 className="flex flex-col items-center justify-center gap-1 md:gap-6 w-full px-4 pt-6 md:pt-20">
-              <span className={`text-3xl sm:text-5xl md:text-8xl lg:text-9xl font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-tight text-center w-full break-words px-2`}>{groomName}</span>
-              <span className="text-serif italic text-lg md:text-5xl text-gray-500 align-middle py-1">
-                {isRussian ? "и" : "va"}
+              <span className={`text-3xl sm:text-5xl md:text-8xl lg:text-9xl font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-tight text-center w-full break-words px-2`}>{displayGroom}</span>
+              <span className="text-serif italic text-lg md:text-5xl text-gray-400 align-middle py-1">
+                {sep}
               </span>
-              <span className={`text-3xl sm:text-5xl md:text-8xl lg:text-9xl font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-tight text-center w-full break-words px-2`}>{brideName}</span>
+              <span className={`text-3xl sm:text-5xl md:text-8xl lg:text-9xl font-serif italic drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] ${goldText} leading-tight text-center w-full break-words px-2`}>{displayBride}</span>
             </h1>
 
             <div className="space-y-4 md:space-y-6 pt-6 md:pt-20">
@@ -500,7 +504,11 @@ export default function GoldDarkInvitation({
           <div className="space-y-12">
             <div className="space-y-4">
                <p className="text-xl md:text-2xl font-serif italic text-[#D4AF37]/60">{isRussian ? "С благодарностью и любовью," : "Minnatdorchilik va sevgi bilan,"}</p>
-               <div className={`text-3xl sm:text-4xl md:text-8xl font-serif italic drop-shadow-[0_0_40px_rgba(212,175,55,0.1)] ${goldText} leading-tight px-4`}>{groomName} {isRussian ? "и" : "va"} {brideName}</div>
+               <div className={`text-3xl sm:text-4xl md:text-8xl font-serif italic drop-shadow-[0_0_40px_rgba(212,175,55,0.1)] ${goldText} leading-tight px-4 flex items-center justify-center gap-2 flex-wrap`}>
+                  <span>{displayGroom}</span> 
+                  <span className="text-2xl sm:text-3xl md:text-6xl text-[#D4AF37]/60">{sep}</span> 
+                  <span>{displayBride}</span>
+               </div>
             </div>
             
             <GoldOrnament />
