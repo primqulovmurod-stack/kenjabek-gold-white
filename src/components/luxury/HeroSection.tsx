@@ -116,7 +116,12 @@ export function HeroSection({ groomName, brideName, date, time, locationName, lo
             transition={{ duration: 1.1, ease: 'easeOut', delay: 0.35 }}
             className={`relative ${isPreview ? 'w-[200px] h-[300px]' : 'w-[300px] h-[400px] md:w-[400px] md:h-[500px] lg:w-[450px] lg:h-[600px]'} mx-auto overflow-hidden shadow-2xl bg-gray-100 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] border-8 border-white`}
           >
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${imageUrl || defaultImage}")` }} />
+            <img 
+              src={imageUrl || defaultImage} 
+              alt="Wedding Hero"
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="eager"
+            />
           </motion.div>
         </motion.div>
       </div>

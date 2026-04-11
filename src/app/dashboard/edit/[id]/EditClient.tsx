@@ -104,24 +104,23 @@ export default function EditClient({ id }: { id: string }) {
         const fileName = `${id}-${Date.now()}-${fieldName}.${fileExt}`;
         const filePath = `images/${fileName}`;
 
-        const { error: uploadError } = await supabase.storage
-            .from('invitations')
-            .upload(filePath, file, { cacheControl: '3600', upsert: false });
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('path', filePath);
+        formData.append('bucket', 'invitations');
 
-        if (uploadError) {
-          console.error('SUPABASE UPLOAD ERROR:', uploadError);
-          throw uploadError;
-        }
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+        });
 
-        const { data: { publicUrl: supabaseUrl } } = supabase.storage
-            .from('invitations')
-            .getPublicUrl(filePath);
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Upload failed');
         
-        updateField(fieldName, supabaseUrl);
+        updateField(fieldName, result.url);
     } catch (err: any) {
-        console.error('IMAGE UPLOAD FALLBACK TO BLOB:', err);
-        const localUrl = URL.createObjectURL(file);
-        updateField(fieldName, localUrl);
+        console.error('IMAGE UPLOAD ERROR:', err);
+        alert("Rasmni yuklab bo'lmadi. Iltimos, qaytadan urunib ko'ring. (Bucket yoki RLS muammosi bo'lishi mumkin)");
     } finally {
         setIsImageUploading(false);
     }
@@ -142,28 +141,24 @@ export default function EditClient({ id }: { id: string }) {
     try {
         if (file.size > 15 * 1024 * 1024) throw new Error("Maksimal 15MB fayl yuklash mumkin.");
 
-        const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
-        let publicUrl = "";
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${id}-${Date.now()}.${fileExt}`;
+        const filePath = `music/${fileName}`;
 
-        if (bucketError || !buckets.find(b => b.name === 'invitations')) {
-          publicUrl = URL.createObjectURL(file);
-        } else {
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${id}-${Date.now()}.${fileExt}`;
-          const filePath = `music/${fileName}`;
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('path', filePath);
+        formData.append('bucket', 'invitations');
 
-          const { error: uploadError } = await supabase.storage
-              .from('invitations')
-              .upload(filePath, file, { cacheControl: '3600', upsert: false });
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+        });
 
-          if (uploadError) throw uploadError;
-
-          const { data: { publicUrl: supabaseUrl } } = supabase.storage
-              .from('invitations')
-              .getPublicUrl(filePath);
-          
-          publicUrl = supabaseUrl;
-        }
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Upload failed');
+        
+        let publicUrl = result.url;
 
         updateField('musicUrl', publicUrl);
         
@@ -175,12 +170,7 @@ export default function EditClient({ id }: { id: string }) {
 
     } catch (err: any) {
         console.error('UPLOAD ERROR:', err);
-        try {
-          const localUrl = URL.createObjectURL(file);
-          updateField('musicUrl', localUrl);
-        } catch (e) {
-          alert("Xatolik: " + (err.message || "Musiqani yuklab bo'lmadi"));
-        }
+        alert("Xatolik: " + (err.message || "Musiqani yuklab bo'lmadi"));
     } finally {
         setIsUploading(false);
     }

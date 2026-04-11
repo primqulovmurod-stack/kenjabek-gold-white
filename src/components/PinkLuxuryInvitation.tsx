@@ -153,11 +153,13 @@ export default function PinkLuxuryInvitation({
               whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className={`relative ${isPreview ? 'h-[300px]' : 'h-[400px] md:h-[500px]'} w-full overflow-hidden shadow-2xl rounded-[2rem] md:rounded-[3rem] border-8 border-white`}
+              className={`relative ${isPreview ? 'h-[300px]' : 'h-[400px] md:h-[500px]'} w-full overflow-hidden shadow-2xl rounded-[2rem] md:rounded-[3rem] border-8 border-white bg-gray-50`}
             >
-              <div 
-                 className="absolute inset-0 bg-cover bg-center" 
-                 style={{ backgroundImage: `url("${imageUrl2 || imageUrl || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=2000&auto=format&fit=crop"}")` }} 
+              <img 
+                 src={imageUrl2 || imageUrl || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=2000&auto=format&fit=crop"} 
+                 alt="Wedding photo 2"
+                 className="absolute inset-0 w-full h-full object-cover"
+                 loading="lazy"
                />
             </motion.div>
           </div>
@@ -187,11 +189,13 @@ export default function PinkLuxuryInvitation({
               whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className={`relative ${isPreview ? 'h-[300px]' : 'h-[400px] md:h-[500px]'} w-full overflow-hidden shadow-2xl rounded-[2rem] md:rounded-[3rem] border-8 border-white`}
+              className={`relative ${isPreview ? 'h-[300px]' : 'h-[400px] md:h-[500px]'} w-full overflow-hidden shadow-2xl rounded-[2rem] md:rounded-[3rem] border-8 border-white bg-gray-50`}
             >
-               <div 
-                 className="absolute inset-0 bg-cover bg-center" 
-                 style={{ backgroundImage: `url("${imageUrl3 || imageUrl || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=2000&auto=format&fit=crop"}")` }} 
+               <img 
+                 src={imageUrl3 || imageUrl || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=2000&auto=format&fit=crop"} 
+                 alt="Wedding photo 3"
+                 className="absolute inset-0 w-full h-full object-cover"
+                 loading="lazy"
                />
             </motion.div>
           </div>
