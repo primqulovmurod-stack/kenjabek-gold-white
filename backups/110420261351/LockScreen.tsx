@@ -24,12 +24,11 @@ export function LockScreen({ onUnlock, groomName, brideName }: LockScreenProps) 
         y: "-100%", 
         transition: { duration: 0.8, ease: "easeInOut" } 
       }}
-      className="fixed inset-0 w-full h-[100svh] z-[100] flex flex-col items-center justify-center overflow-y-auto bg-cover bg-center font-sans selection:bg-purple-200"
+      className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-cover bg-center font-sans selection:bg-purple-200"
       style={{ backgroundImage: 'url("/assets/lock-bg.png")' }}
     >
-      <div className="absolute inset-0 min-h-full" />
       {/* Dark overlay for better readability if needed */}
-      <div className="fixed inset-0 bg-white/30 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]" />
 
       {/* Main Content */}
       <motion.div 
@@ -52,25 +51,11 @@ export function LockScreen({ onUnlock, groomName, brideName }: LockScreenProps) 
           </div>
 
         {/* Text */}
-        <div className="text-center space-y-3">
-          {/* Full names */}
-          <div className="flex items-center justify-center gap-2">
-            <span
-              className="text-xl font-black text-[#0F172A] tracking-tight"
-            >
-              {groomName}
-            </span>
-            <span className="text-purple-400 font-light text-lg">&</span>
-            <span
-              className="text-xl font-black text-purple-700 tracking-tight"
-            >
-              {brideName}
-            </span>
-          </div>
-          <h2 className="text-sm font-semibold text-[#0F172A] tracking-wide">
-            Siz uchun maxsus taklifnoma
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-extrabold text-[#0F172A] tracking-tight leading-snug">
+            Siz uchun maxsus
           </h2>
-          <p className="text-xs text-[#64748B] font-medium px-4">
+          <p className="text-sm text-[#64748B] font-medium px-4">
             Taklifnoma tafsilotlarini ko&apos;rish uchun bosing.
           </p>
         </div>

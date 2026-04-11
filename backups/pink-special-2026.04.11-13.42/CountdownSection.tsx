@@ -70,13 +70,15 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate, isPrev
   );
 
   return (
-    <section className={`${isPreview ? 'py-8' : 'py-16'} px-6 bg-transparent relative overflow-hidden`}>
+    <section className={`${isPreview ? 'py-8' : 'py-16'} px-6 bg-[#FFF9FA] relative overflow-hidden`}>
+      {/* Background Decor olib tashlandi */}
+
+      
       <div className="max-w-md mx-auto relative z-10">
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true }}
           className={`text-center ${isPreview ? 'mb-6' : 'mb-10'}`}
         >
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -88,17 +90,10 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate, isPrev
         </motion.div>
 
         <div className="grid grid-cols-4 gap-3 md:gap-4">
-          {[{ value: timeLeft.days, label: 'Kun' }, { value: timeLeft.hours, label: 'Soat' }, { value: timeLeft.minutes, label: 'Daqiqa' }, { value: timeLeft.seconds, label: 'Soniya' }].map((item, i) => (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 30, scale: 0.85 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
-            >
-              <TimeBlock value={item.value} label={item.label} />
-            </motion.div>
-          ))}
+          <TimeBlock value={timeLeft.days} label="Kun" />
+          <TimeBlock value={timeLeft.hours} label="Soat" />
+          <TimeBlock value={timeLeft.minutes} label="Daqiqa" />
+          <TimeBlock value={timeLeft.seconds} label="Soniya" />
         </div>
       </div>
     </section>

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Volume2, VolumeX } from 'lucide-react';
 
 import { LockScreen } from '@/components/luxury/LockScreen';
 import { HeroSection } from '@/components/luxury/HeroSection';
@@ -47,19 +46,7 @@ export default function PinkLuxuryInvitation({
   isMuted = false
 }: PinkLuxuryInvitationProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
-
-  const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   // Disable scrolling while locked
   useEffect(() => {
@@ -80,12 +67,7 @@ export default function PinkLuxuryInvitation({
   if (!mounted) return null;
 
   return (
-    <div 
-      className="relative min-h-[100svh] selection:bg-purple-200 font-sans text-[#0F172A] bg-cover bg-fixed bg-center"
-      style={{ backgroundImage: 'url("/assets/lock-bg.png")' }}
-    >
-      <div className="fixed inset-0 bg-white/70 backdrop-blur-[2px] pointer-events-none" />
-      <div className="relative z-10 w-full h-full">
+    <div className="bg-white min-h-[100svh] selection:bg-purple-200 font-sans text-[#0F172A]">
       {musicUrl && <audio ref={audioRef} src={musicUrl} loop muted={isMuted} />}
       <AnimatePresence>
         {!isUnlocked && (
@@ -99,27 +81,16 @@ export default function PinkLuxuryInvitation({
               
               if (audioRef.current) {
                 audioRef.current.play().catch(e => console.log('Autoplay blocked:', e));
-                setIsPlaying(true);
               }
             }} 
           />
         )}
       </AnimatePresence>
 
-      {isUnlocked && musicUrl && (
-        <button 
-          onClick={toggleMusic}
-          className="fixed top-6 right-6 z-[150] p-3 md:p-4 bg-white/50 backdrop-blur-xl border border-white/70 rounded-full shadow-[0_8px_30px_rgba(219,39,119,0.15)] hover:scale-110 hover:bg-white/70 active:scale-95 transition-all text-[#BE185D]"
-        >
-          {isPlaying ? <Volume2 size={24} strokeWidth={2.5} /> : <VolumeX size={24} strokeWidth={2.5} />}
-        </button>
-      )}
-
       <main 
         className={`relative w-full ${isUnlocked ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'} transition-opacity duration-1000 delay-500`}
       >
         <HeroSection groomName={groomName} brideName={brideName} date={date} time={time} isPreview={isPreview} imageUrl={imageUrl} locationUrl={locationUrl} locationName={locationName} locationAddress={locationAddress} description={description} />
-        
         <CountdownSection weddingDate={date} isPreview={isPreview} />
         
         {/* O'rtadagi rasm bo'limi */}
@@ -140,28 +111,11 @@ export default function PinkLuxuryInvitation({
 
         <CalendarSection date={date} isPreview={isPreview} />
         <VenueSection locationName={locationName} locationAddress={locationAddress} locationUrl={locationUrl} isPreview={isPreview} />
-        
-        {/* Pastki rasm bo'limi (Xarita va To'yona o'rtasida) */}
-        <div className={`w-full max-w-lg mx-auto px-6 ${isPreview ? 'pb-4' : 'pb-8 md:pb-12'}`}>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className={`relative ${isPreview ? 'h-[300px]' : 'h-[400px] md:h-[500px]'} w-full overflow-hidden shadow-2xl rounded-[2rem] md:rounded-[3rem] border-8 border-white`}
-          >
-             <div 
-               className="absolute inset-0 bg-cover bg-center" 
-               style={{ backgroundImage: `url("${imageUrl || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=2000&auto=format&fit=crop"}")` }} 
-             />
-          </motion.div>
-        </div>
-
         {showGift && (
           <GiftSection cardNumber={cardNumber} cardName={cardName} isPreview={isPreview} />
         )}
         
-        <footer className="py-12 md:py-24 text-center flex flex-col items-center justify-center space-y-4 md:space-y-6 font-sans px-4">
+        <footer className="py-12 md:py-24 bg-[#F8FAFC] text-center border-t border-purple-50 flex flex-col items-center justify-center space-y-4 md:space-y-6 font-sans px-4">
           <div className="w-12 h-[3px] bg-purple-600 rounded-full" />
           <p 
             className="text-3xl md:text-5xl font-medium text-[#0F172A] tracking-wider italic"
@@ -173,7 +127,7 @@ export default function PinkLuxuryInvitation({
             Eng baxtli kunimizda biz bilan bo'ling
           </p>
 
-          <div className="mt-6 md:mt-8 pt-6 md:pt-8 w-full max-w-sm flex flex-col items-center gap-3 md:gap-4 border-t border-purple-900/10">
+          <div className="mt-6 md:mt-8 pt-6 md:pt-8 w-full max-w-sm flex flex-col items-center gap-3 md:gap-4">
             <p className="text-[10px] md:text-sm font-bold text-[#64748B] uppercase tracking-widest italic">
               Taklifnoma Asia orqali yaratildi
             </p>
@@ -183,7 +137,6 @@ export default function PinkLuxuryInvitation({
           </div>
         </footer>
       </main>
-      </div>
     </div>
   );
 }

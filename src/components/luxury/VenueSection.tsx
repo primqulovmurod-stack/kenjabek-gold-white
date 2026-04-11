@@ -6,15 +6,15 @@ import { MapPin, Navigation } from 'lucide-react';
 
 export function VenueSection({ locationName, locationAddress, locationUrl, isPreview = false }: { locationName?: string; locationAddress?: string; locationUrl?: string; isPreview?: boolean }) {
   return (
-    <section className={`relative w-full ${isPreview ? 'py-8' : 'py-12 md:py-24'} bg-white flex flex-col items-center justify-center font-sans overflow-hidden`}>
+    <section className={`relative w-full ${isPreview ? 'py-8' : 'py-12 md:py-24'} bg-transparent flex flex-col items-center justify-center font-sans overflow-hidden`}>
       {/* Decorative Blob */}
       <div className="absolute top-[30%] left-[-10%] w-[500px] h-[500px] bg-[#F3E8FF] rounded-full blur-[100px] opacity-60 pointer-events-none" />
 
       <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: 70, scale: 0.96 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 w-full max-w-4xl px-6"
       >
         <div className={`bg-white rounded-[2rem] border border-gray-100 shadow-2xl shadow-gray-200/50 flex ${isPreview ? 'flex-col' : 'flex-col md:flex-row'} overflow-hidden`}>

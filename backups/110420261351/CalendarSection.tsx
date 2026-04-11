@@ -36,13 +36,13 @@ export function CalendarSection({ date, isPreview = false }: { date?: string; is
   const monthDays = Array.from({ length: totalDays }, (_, i) => i + 1);
   
   return (
-    <section className={`relative w-full ${isPreview ? 'py-8' : 'py-12 md:py-24'} bg-transparent flex flex-col items-center justify-center font-sans border-t border-purple-900/10`}>
+    <section className={`relative w-full ${isPreview ? 'py-8' : 'py-12 md:py-24'} bg-[#F8FAFC] flex flex-col items-center justify-center font-sans border-t border-gray-100`}>
       
       <motion.div 
-        initial={{ opacity: 0, y: 60 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
         className={`text-center ${isPreview ? 'mb-6' : 'mb-8 md:mb-12'} space-y-2 md:space-y-3`}
       >
         <span className="inline-block px-4 py-1.5 rounded-full bg-purple-100 text-purple-700 text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 md:mb-2">

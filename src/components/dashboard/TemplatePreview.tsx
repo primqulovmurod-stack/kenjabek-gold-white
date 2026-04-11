@@ -19,7 +19,7 @@ export const templates = [
   { 
     id: 'pink-luxury', 
     name: 'Pink Luxury Special', 
-    image: 'https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800&auto=format&fit=crop',
     style: 'Modern & Soft'
   },
   { 
