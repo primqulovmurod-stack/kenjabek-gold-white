@@ -47,8 +47,8 @@ const MUSIC_TRACKS = [
 ];
 
 const INITIAL_CONTENT: InvitationContent = {
-  groomName: 'Ali',
-  brideName: 'Laylo',
+  groomName: 'Kuyov',
+  brideName: 'Kelin',
   date: '',
   time: '',
   locationName: '',
@@ -60,15 +60,13 @@ const INITIAL_CONTENT: InvitationContent = {
   cardNumber: '',
   cardName: '',
   showGift: false,
-  description: "Bizning hayotimizdagi eng muhim va unutilmas kunda yonimizda bo'lishingizdan bag'oyatda xursandmiz. Ushbu kunni biz bilan baham ko'ring."
+  description: "Bizning hayotimizdagi eng muhim va unutilmas kunda yonimizda bo'lishingizdan bag'oyatda xursandmiz."
 };
 
-function EditInvitationPageInner({ params }: { params: Promise<{ id: string }> }) {
+function EditInvitationPageInner({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateParam = searchParams.get('template');
-  const unwrappedParams = use(params);
-  const id = unwrappedParams.id;
   
   const [content, setContent] = useState<InvitationContent>({
       ...INITIAL_CONTENT,
@@ -954,10 +952,22 @@ function EditInvitationPageInner({ params }: { params: Promise<{ id: string }> }
   );
 }
 
+function EditPageLoader({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = React.use(params);
+    return <EditInvitationPageInner id={id} />;
+}
+
 export default function EditInvitationPage(props: any) {
     return (
-        <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#FFF9FA]"><div className="w-10 h-10 border-4 border-[#E11D48] border-t-transparent rounded-full animate-spin"></div></div>}>
-            <EditInvitationPageInner {...props} />
+        <React.Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-[#FFF9FA]">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-[#E11D48] border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#E11D48] animate-pulse">Yuklanmoqda...</p>
+                </div>
+            </div>
+        }>
+            <EditPageLoader {...props} />
         </React.Suspense>
     );
 }
