@@ -41,7 +41,7 @@ export default function NewInvitationPage() {
             imageUrl: 'https://images.pexels.com/photos/30206324/pexels-photo-30206324.jpeg',
             musicUrl: '/assets/die_with_a_smile.mp3',
             theme: templateId,
-            showGift: templateId === 'pink-luxury', // Enable gift section by default for Pink Luxury
+            showGift: templateId === 'pink-flower', // Enable gift section by default for Pink templates
             cardNumber: '8600 **** **** ****',
             cardName: 'ISM FAMILIYA'
         }

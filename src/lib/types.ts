@@ -7,6 +7,8 @@ export interface InvitationContent {
   locationName: string;
   locationUrl: string;
   imageUrl: string;
+  imageUrl2?: string;
+  imageUrl3?: string;
   musicUrl: string;
   theme: string;
   locationAddress?: string;

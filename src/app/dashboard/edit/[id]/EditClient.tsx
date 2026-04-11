@@ -57,7 +57,7 @@ const INITIAL_CONTENT: InvitationContent = {
   locationUrl: '',
   imageUrl: 'https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg',
   musicUrl: '',
-  theme: 'pink-luxury',
+  theme: 'pink-flower',
   cardNumber: '',
   cardName: '',
   showGift: false,
@@ -87,7 +87,7 @@ export default function EditClient({ id }: { id: string }) {
   const { user } = useAuth();
   const isDarkMode = theme === 'dark';
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: 'imageUrl' | 'imageUrl2' | 'imageUrl3' = 'imageUrl') => {
     const file = e.target.files?.[0];
     if (!file) return;
     
@@ -121,11 +121,11 @@ export default function EditClient({ id }: { id: string }) {
           publicUrl = supabaseUrl;
         }
 
-        updateField('imageUrl', publicUrl);
+        updateField(fieldName, publicUrl);
     } catch (err: any) {
         console.error('IMAGE UPLOAD ERROR:', err);
         const localUrl = URL.createObjectURL(file);
-        updateField('imageUrl', localUrl);
+        updateField(fieldName, localUrl);
     } finally {
         setIsImageUploading(false);
     }
@@ -175,7 +175,6 @@ export default function EditClient({ id }: { id: string }) {
         if (audio) {
             audio.src = publicUrl;
             audio.load();
-            audio.play().catch(e => console.log('Autoplay blocked preview'));
         }
 
     } catch (err: any) {
@@ -225,7 +224,9 @@ export default function EditClient({ id }: { id: string }) {
         if (data) {
             const finalContent = { ...data.content };
             if (finalContent.theme === 'gold-white' || finalContent.theme === 'pink-white' || !finalContent.theme) {
-                finalContent.theme = 'pink-luxury';
+                if (finalContent.theme !== 'pink-flower') {
+                    finalContent.theme = 'pink-flower';
+                }
             }
             if (finalContent.date && finalContent.date.includes('-')) {
                 const parts = finalContent.date.split('-');
@@ -243,7 +244,9 @@ export default function EditClient({ id }: { id: string }) {
                 if (currentInvite) {
                     const finalContent = { ...currentInvite.content };
                     if (finalContent.theme === 'gold-white' || finalContent.theme === 'pink-white' || !finalContent.theme) {
-                        finalContent.theme = 'pink-luxury';
+                        if (finalContent.theme !== 'pink-flower') {
+                            finalContent.theme = 'pink-flower';
+                        }
                     }
                     setContent(finalContent);
                     setIsPaid(currentInvite.is_paid);
@@ -421,13 +424,38 @@ export default function EditClient({ id }: { id: string }) {
              <h3 className="text-[10px] font-black text-[#E11D48] uppercase tracking-[0.2em] flex items-center gap-2">
                 <ImageIcon size={14} /> Rasm
             </h3>
-            <div className={`relative w-full aspect-video rounded-[2rem] overflow-hidden border-2 border-dashed ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                <img src={content.imageUrl} alt="Preview" className={`w-full h-full object-cover ${isImageUploading ? 'opacity-30 blur-sm' : 'opacity-100'}`} />
-                <label className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/40 opacity-0 hover:opacity-100 transition-all text-white text-[10px] font-bold uppercase">
-                    <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
-                    {isImageUploading ? <Loader2 size={24} className="animate-spin" /> : 'O\'zgartirish'}
-                </label>
-            </div>
+             <div className="grid grid-cols-1 gap-6">
+                <div className="space-y-3">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Asosiy rasm (Hero)</label>
+                    <div className={`relative w-full aspect-video rounded-[1.5rem] overflow-hidden border-2 border-dashed ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                        <img src={content.imageUrl} alt="Hero" className="w-full h-full object-cover" />
+                        <label className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/40 opacity-0 hover:opacity-100 transition-all text-white text-[10px] font-bold uppercase">
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, 'imageUrl')} />
+                            {isImageUploading ? <Loader2 size={24} className="animate-spin" /> : 'O\'zgartirish'}
+                        </label>
+                    </div>
+                </div>
+                <div className="space-y-3">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">O'rtadagi rasm</label>
+                    <div className={`relative w-full aspect-video rounded-[1.5rem] overflow-hidden border-2 border-dashed ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                        <img src={content.imageUrl2 || content.imageUrl} alt="Middle" className="w-full h-full object-cover" />
+                        <label className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/40 opacity-0 hover:opacity-100 transition-all text-white text-[10px] font-bold uppercase">
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, 'imageUrl2')} />
+                            'O\'zgartirish'
+                        </label>
+                    </div>
+                </div>
+                <div className="space-y-3">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Pastki rasm</label>
+                    <div className={`relative w-full aspect-video rounded-[1.5rem] overflow-hidden border-2 border-dashed ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                        <img src={content.imageUrl3 || content.imageUrl} alt="Bottom" className="w-full h-full object-cover" />
+                        <label className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/40 opacity-0 hover:opacity-100 transition-all text-white text-[10px] font-bold uppercase">
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, 'imageUrl3')} />
+                            'O\'zgartirish'
+                        </label>
+                    </div>
+                </div>
+             </div>
           </section>
 
           <section className="space-y-6">
@@ -438,13 +466,18 @@ export default function EditClient({ id }: { id: string }) {
                 {MUSIC_TRACKS.map(track => (
                     <button key={track.url} onClick={() => updateField('musicUrl', track.url)} className={`p-4 rounded-2xl text-[10px] font-bold uppercase tracking-tight border ${content.musicUrl === track.url ? 'bg-[#E11D48] text-white border-[#E11D48]' : isDarkMode ? 'bg-white/5 border-white/5 text-gray-500' : 'bg-white border-gray-100 text-gray-600'}`}>{track.name}</button>
                 ))}
+                <label className={`p-4 rounded-2xl text-[10px] font-bold uppercase tracking-tight border cursor-pointer flex items-center justify-center gap-2 border-dashed ${isDarkMode ? 'bg-white/5 border-white/20 text-gray-400' : 'bg-gray-50 border-gray-300 text-gray-500'}`}>
+                    <input type="file" className="hidden" accept=".mp3, .wav, .m4a, .ogg, audio/*" onChange={handleMusicUpload} />
+                    {isUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                    {selectedMusicName || "O'z musiqangizni yuklang"}
+                </label>
             </div>
           </section>
 
           <section className="space-y-6 pb-20">
              <div className="flex items-center justify-between">
                 <h3 className="text-[10px] font-black text-[#E11D48] uppercase tracking-[0.2em] flex items-center gap-2">
-                    <CreditCard size={14} /> Karta raqami
+                    <CreditCard size={14} /> To'yona
                 </h3>
                 <button onClick={() => updateField('showGift', !content.showGift)} className={`w-10 h-5 rounded-full transition-all ${content.showGift ? 'bg-[#E11D48]' : 'bg-gray-600'} relative`}>
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${content.showGift ? 'left-6' : 'left-1'}`} />
@@ -462,7 +495,7 @@ export default function EditClient({ id }: { id: string }) {
 
       <div className={`flex-1 relative ${activeTab === 'edit' ? 'hidden lg:block' : 'block'} bg-black/10`}>
         <div className={`absolute inset-0 flex items-center justify-center p-4 md:p-8 lg:p-12`}>
-            <div className={`relative w-full h-full max-w-[400px] max-h-[850px] shadow-2xl rounded-[3rem] overflow-hidden border-[8px] ${isDarkMode ? 'border-[#1A1A1E]' : 'border-white'}`}>
+            <div className={`relative w-full h-full max-w-[400px] max-h-[850px] shadow-2xl rounded-[3rem] overflow-y-auto overflow-x-hidden border-[8px] no-scrollbar ${isDarkMode ? 'border-[#1A1A1E]' : 'border-white'}`}>
                 <TemplatePreview content={content} isPreview={true} isMuted={isAudioMuted} />
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full border border-white/10 flex items-center gap-2 pointer-events-none">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />

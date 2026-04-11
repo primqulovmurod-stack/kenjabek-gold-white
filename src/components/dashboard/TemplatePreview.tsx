@@ -17,8 +17,8 @@ import StitchInvitation from '@/components/StitchInvitation/Main';
 
 export const templates = [
   { 
-    id: 'pink-luxury', 
-    name: 'Pink Luxury Special', 
+    id: 'pink-flower', 
+    name: 'Pink Flower', 
     image: '/assets/pink_invite_mockup.png',
     style: 'Modern & Soft'
   },
@@ -44,10 +44,10 @@ interface TemplatePreviewProps {
 }
 
 export default function TemplatePreview({ content, isPreview, isMuted }: TemplatePreviewProps) {
-  const theme = content.theme || 'pink-luxury';
+  const theme = content.theme || 'pink-flower';
 
   switch (theme) {
-    case 'pink-luxury':
+    case 'pink-flower':
     case 'pink-white': // Map legacy pink to the new luxury design
         return <PinkLuxuryInvitation {...content} isPreview={isPreview} isMuted={isMuted} />;
     case 'gold-white': // Map legacy gold-white to the new luxury pink if requested (based on user migration)

@@ -6,8 +6,15 @@ import { motion } from 'framer-motion';
 export function CalendarSection({ date, isPreview = false }: { date?: string; isPreview?: boolean }) {
   const days = ['Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh', 'Ya'];
   
-  // Parse date
-  const weddingDate = date ? new Date(date) : new Date('2026-05-15');
+  // Parse date safely
+  let weddingDate = new Date();
+  if (date) {
+    const parsed = new Date(date);
+    if (!isNaN(parsed.getTime())) {
+      weddingDate = parsed;
+    }
+  }
+  
   const year = weddingDate.getFullYear();
   const month = weddingDate.getMonth();
   const highlightedDay = weddingDate.getDate();
@@ -17,22 +24,20 @@ export function CalendarSection({ date, isPreview = false }: { date?: string; is
     'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 
     'Iyul', 'Avgust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
   ];
-  const monthLabel = `${monthNames[month]} ${year}`;
+  const monthLabel = `${monthNames[month] || 'Sana'} ${year || ''}`;
 
   // Calculate first day of the month
   const firstDay = new Date(year, month, 1).getDay(); // 0 (Sun) to 6 (Sat)
   
   // Convert to Mon-Sun (Mon=0, Sun=6)
-  // 0 (Sun) -> 6
-  // 1 (Mon) -> 0
-  // 2 (Tue) -> 1
-  // ...
-  // 6 (Sat) -> 5
-  const emptyDaysCount = (firstDay + 6) % 7;
-  const emptyDays = Array(emptyDaysCount).fill(null);
+  // If firstDay is NaN (though highly unlikely with the fix above), fallback to 1
+  const safeFirstDay = isNaN(firstDay) ? 1 : firstDay;
+  const emptyDaysCount = (safeFirstDay + 6) % 7;
+  const emptyDays = Array(Math.max(0, emptyDaysCount)).fill(null);
   
   // Calculate total days in month
-  const totalDays = new Date(year, month + 1, 0).getDate();
+  const lastDayOfMonth = new Date(year, month + 1, 0);
+  const totalDays = isNaN(lastDayOfMonth.getTime()) ? 30 : lastDayOfMonth.getDate();
   const monthDays = Array.from({ length: totalDays }, (_, i) => i + 1);
   
   return (
