@@ -121,6 +121,11 @@ export function HeroSection({ groomName, brideName, date, time, locationName, lo
               alt="Wedding Hero"
               className="absolute inset-0 w-full h-full object-cover"
               loading="eager"
+              style={{ 
+                WebkitBackfaceVisibility: 'hidden',
+                WebkitTransform: 'translate3d(0,0,0)',
+                zIndex: 1
+              }}
             />
           </motion.div>
         </motion.div>

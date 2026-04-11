@@ -160,6 +160,11 @@ export default function PinkLuxuryInvitation({
                  alt="Wedding photo 2"
                  className="absolute inset-0 w-full h-full object-cover"
                  loading="lazy"
+                 style={{ 
+                   WebkitBackfaceVisibility: 'hidden',
+                   WebkitTransform: 'translate3d(0,0,0)',
+                   zIndex: 1
+                 }}
                />
             </motion.div>
           </div>
@@ -196,6 +201,11 @@ export default function PinkLuxuryInvitation({
                  alt="Wedding photo 3"
                  className="absolute inset-0 w-full h-full object-cover"
                  loading="lazy"
+                 style={{ 
+                   WebkitBackfaceVisibility: 'hidden',
+                   WebkitTransform: 'translate3d(0,0,0)',
+                   zIndex: 1
+                 }}
                />
             </motion.div>
           </div>
