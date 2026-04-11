@@ -65,6 +65,7 @@ export default function PaymentModal({
       }, (payload) => {
           if (payload.new.is_paid) {
               setIsPaid(true);
+              setStep('details');
               onSuccess();
           }
       })
@@ -131,28 +132,34 @@ export default function PaymentModal({
                 <div className="p-10 space-y-6 max-h-[90vh] overflow-y-auto no-scrollbar">
                     <header className="flex items-center justify-between">
                         <div className="space-y-1">
-                            <h2 className={`font-playfair text-3xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>To'lov</h2>
-                            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Xavfsiz va tezkor</p>
+                            <h2 className={`font-playfair text-3xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                                {isPaid ? 'Tabriklaymiz!' : 'To\'lov'}
+                            </h2>
+                            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">
+                                {isPaid ? 'Taklifnomangiz tayyor' : 'Xavfsiz va tezkor'}
+                            </p>
                         </div>
                         <button onClick={onClose} className={`p-3 rounded-full transition-colors ${isDarkMode ? 'hover:bg-white/5 text-gray-500' : 'hover:bg-gray-50 text-gray-300'}`}>
                             <X size={24} />
                         </button>
                     </header>
 
-                    <div className={`rounded-[2.5rem] p-8 border relative overflow-hidden transition-all ${
-                        isDarkMode ? 'bg-white/5 border-white/5' : 'bg-[#E11D48]/5 border-[#FFE4E6]/50'
-                    }`}>
-                        <div className="absolute top-0 right-0 p-8 text-[#E11D48] opacity-5">
-                            <CreditCard size={120} />
+                    {!isPaid && (
+                        <div className={`rounded-[2.5rem] p-8 border relative overflow-hidden transition-all ${
+                            isDarkMode ? 'bg-white/5 border-white/5' : 'bg-[#E11D48]/5 border-[#FFE4E6]/50'
+                        }`}>
+                            <div className="absolute top-0 right-0 p-8 text-[#E11D48] opacity-5">
+                                <CreditCard size={120} />
+                            </div>
+                            <div className="relative space-y-2 text-center md:text-left">
+                                 <p className="text-[10px] font-black text-[#E11D48] uppercase tracking-[0.3em] leading-loose opacity-80">Payme / Click / Uzum</p>
+                                 <div className="flex items-baseline justify-center md:justify-start gap-2">
+                                    <span className={`text-4xl font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{price}</span>
+                                    <span className="text-xl font-bold text-gray-400 uppercase">so'm</span>
+                                 </div>
+                            </div>
                         </div>
-                        <div className="relative space-y-2 text-center md:text-left">
-                             <p className="text-[10px] font-black text-[#E11D48] uppercase tracking-[0.3em] leading-loose opacity-80">Payme / Click / Uzum</p>
-                             <div className="flex items-baseline justify-center md:justify-start gap-2">
-                                <span className={`text-4xl font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{price}</span>
-                                <span className="text-xl font-bold text-gray-400 uppercase">so'm</span>
-                             </div>
-                        </div>
-                    </div>
+                    )}
 
                     <div className={`p-6 rounded-[2rem] border border-dashed text-center space-y-4 transition-all ${
                         isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'

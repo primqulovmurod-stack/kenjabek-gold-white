@@ -526,7 +526,6 @@ export default function EditClient({ id }: { id: string }) {
         onClose={() => setShowPayment(false)} 
         onSuccess={() => {
             setIsPaid(true);
-            setShowPayment(false);
         }}
         price="190 000" 
         invitationId={id} 
