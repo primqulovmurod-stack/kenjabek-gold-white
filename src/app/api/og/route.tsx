@@ -50,9 +50,9 @@ export async function GET(req: NextRequest) {
               flexDirection: 'column',
             }}
           >
-            {/* THE NIGHT BANQUET BACKGROUND (User-provided) */}
+            {/* THE GENERATED NIGHT BANQUET BACKGROUND (v400) */}
             <img 
-              src="https://www.taklifnoma.asia/assets/night-banquet-bg.png?v=300"
+              src="https://www.taklifnoma.asia/assets/night-banquet-final.png?v=400"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
                 width: '1200px',
                 height: '630px',
                 objectFit: 'cover',
-                filter: 'brightness(0.85)',
+                filter: 'brightness(0.9)',
               }}
               alt="Night Banquet BG"
             />
