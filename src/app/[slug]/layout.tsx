@@ -40,14 +40,14 @@ export async function generateMetadata(
 
   // 2. Generate Dynamic OG Image URL
   // We use the full URL if we're in production, or fallback for localhost
-  const theme = invitation.content.theme || 'pink-flower';
+  const baseUrl = 'https://www.taklifnoma.asia';
   const ogSearchParams = new URLSearchParams({
     groom: groomName,
     bride: brideName,
     date: date,
     theme: theme
   }).toString();
-  const ogImage = `/api/og?${ogSearchParams}`;
+  const ogImage = `${baseUrl}/api/og?${ogSearchParams}`;
 
     return {
       metadataBase: new URL('https://www.taklifnoma.asia'),
@@ -56,7 +56,7 @@ export async function generateMetadata(
       openGraph: {
         title,
         description,
-        url: `/${slug}`,
+        url: `${baseUrl}/${slug}`,
         siteName: 'Taklifnoma.Asia',
         locale: 'uz_UZ',
         type: 'website',
