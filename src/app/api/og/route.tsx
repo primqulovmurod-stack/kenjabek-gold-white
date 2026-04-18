@@ -50,9 +50,9 @@ export async function GET(req: NextRequest) {
               flexDirection: 'column',
             }}
           >
-            {/* THE MAIN FLORAL BACKGROUND */}
+            {/* THE PINK ENVELOPE BACKGROUND (premium-pink-bg.png) */}
             <img 
-              src="https://www.taklifnoma.asia/assets/floral-pearl.png?v=10"
+              src="https://www.taklifnoma.asia/assets/premium-pink-bg.png?v=101"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -60,18 +60,17 @@ export async function GET(req: NextRequest) {
                 width: '1200px',
                 height: '630px',
                 objectFit: 'cover',
-                filter: 'brightness(0.95)',
               }}
               alt="Main BG"
             />
 
-            {/* THE WHITE CARD UI (Exactly as in 19:16 screenshot) */}
+            {/* THE WHITE CARD UI (Exactly as in 20:25 screenshot) */}
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.98)',
+                backgroundColor: 'rgba(255, 255, 255, 1)',
                 padding: '50px 60px',
                 borderRadius: '70px',
                 width: '600px',
@@ -105,7 +104,7 @@ export async function GET(req: NextRequest) {
               </div>
 
               {/* Bold Bi-Color Names */}
-              <div style={{ display: 'flex', fontSize: '48px', fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: '8px', letterSpacing: '-1px' }}>
+              <div style={{ display: 'flex', fontSize: '52px', fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: '8px', letterSpacing: '-1px' }}>
                 {groom} <span style={{ color: '#9333EA', margin: '0 12px' }}>&</span> <span style={{ color: '#9333EA' }}>{bride}</span>
               </div>
 
