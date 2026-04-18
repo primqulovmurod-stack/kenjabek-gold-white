@@ -18,9 +18,19 @@
 - [ ] Integrate it into the export flow.
 
 ## 5. Dynamic Links
-- [ ] Create `src/app/[slug]/page.tsx` to fetch invitation data and render the correct template.
+- [x] Create `src/app/[slug]/page.tsx` to fetch invitation data and render the correct template.
 
 ## 6. Premium UI (Shadcn style)
-- [ ] Use `lucide-react` for icons.
-- [ ] Use `framer-motion` for smooth transitions.
-- [ ] Follow the "Taklifnoma.Asia" gold/black/white theme.
+- [x] Use `lucide-react` for icons.
+- [x] Use `framer-motion` for smooth transitions.
+- [x] Follow the "Taklifnoma.Asia" gold/black/white theme.
+
+## 7. Recent Fixes (2026-04-18)
+- [x] Fix `generateSlug` to handle `DD.MM.YYYY` format and dots.
+- [x] Update `[slug]/layout.tsx` to fetch the latest invitation record for metadata.
+- [x] Added success feedback and automatic link copy to the Editor.
+
+## Next Steps
+- [ ] Implement Payment Flow (Checkout / Click / Payme / Uzum).
+- [ ] Finalize Admin Dashboard for approving payments.
+- [ ] Add visitor statistics for invitations.

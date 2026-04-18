@@ -179,8 +179,24 @@ export default function EditClient({ id }: { id: string }) {
   const generateSlug = (groom: string, bride: string, date: string) => {
     const clean = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
     const dateStr = date || '';
-    const parts = dateStr.split('-');
-    const [year, month, day] = parts.length >= 3 ? parts : ['00', '00', '00'];
+    // Handle both DD.MM.YYYY and YYYY-MM-DD
+    const parts = dateStr.includes('.') ? dateStr.split('.') : dateStr.split('-');
+    
+    let day = '00';
+    let month = '00';
+
+    if (parts.length >= 2) {
+      if (parts[0].length === 4) {
+        // YYYY-MM-DD
+        month = parts[1];
+        day = parts[2] || '00';
+      } else {
+        // DD.MM.YYYY
+        day = parts[0];
+        month = parts[1];
+      }
+    }
+    
     const shortDate = `${day}-${month}`;
     return `${clean(groom || 'kuyov')}-${clean(bride || 'kelin')}-${shortDate}`;
   };
@@ -300,11 +316,13 @@ export default function EditClient({ id }: { id: string }) {
             setShowPayment(true);
         }
         
-        if (isPaid) {
-            const url = `https://taklifnoma.asia/${finalSlug}`;
-            navigator.clipboard.writeText(url);
-            setIsCopied(true);
-            setTimeout(() => setIsCopied(false), 2000);
+        const url = `https://taklifnoma.asia/${finalSlug}`;
+        navigator.clipboard.writeText(url);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+        
+        if (!showPaymentOnSuccess) {
+            window.alert(`Muvaffaqiyatli saqlandi!\n\nYangi link: ${url}\n\nLink nusxalandi, endi uni Telegram orqali yuborishingiz mumkin.`);
         }
     } catch (err: any) {
         console.error('SAVE ERROR:', err);

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Montserrat, Cormorant_Garamond, Noto_Serif, Plus_Jakarta_Sans, Manrope } from "next/font/google";
+import { Playfair_Display, Inter, Montserrat, Cormorant_Garamond, Noto_Serif, Plus_Jakarta_Sans, Manrope, Rubik } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -37,6 +37,11 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin", "cyrillic"],
+});
+
+const rubik = Rubik({
+  variable: "--font-rubik",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -79,7 +84,7 @@ export default function RootLayout({
   return (
     <html
       lang="uz"
-      className={`${inter.variable} ${playfairDisplay.variable} ${montserrat.variable} ${cormorant.variable} ${notoSerif.variable} ${plusJakartaSans.variable} ${manrope.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfairDisplay.variable} ${montserrat.variable} ${cormorant.variable} ${notoSerif.variable} ${plusJakartaSans.variable} ${manrope.variable} ${rubik.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

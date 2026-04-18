@@ -14,6 +14,13 @@ import { ElegantInvitation } from '@/components/ElegantInvitation';
 import LuxuryDarkInvitation from '@/components/LuxuryDarkInvitation';
 import PinkWhiteInvitation from '@/components/PinkWhiteInvitation';
 import StitchInvitation from '@/components/StitchInvitation/Main';
+import Premium3DInvitation from '@/components/Premium3DInvitation';
+import ShadcnAnimatedInvitation from '@/components/ShadcnAnimatedInvitation';
+import WhiteGold3DInvitation from '@/components/WhiteGold3DInvitation';
+import FloralPearlInvitation from '@/components/FloralPearlInvitation';
+
+
+
 
 export const templates = [
   { 
@@ -33,8 +40,35 @@ export const templates = [
     name: 'Gold Classic White', 
     image: 'https://images.pexels.com/photos/313707/pexels-photo-313707.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     style: 'Gold & White'
+  },
+  { 
+    id: 'premium-3d', 
+    name: 'Premium 3D (NEW)', 
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
+    style: '3D & Animated'
+  },
+  { 
+    id: 'shadcn-animated', 
+    name: 'Shadcn Luxury', 
+    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop',
+    style: 'Clean & Animated'
+  },
+  { 
+    id: 'white-gold-3d', 
+    name: 'White Gold 3D', 
+    image: 'https://images.unsplash.com/photo-1544924405-4c0787b4a240?q=80&w=2070&auto=format&fit=crop',
+    style: 'Premium Paper-Cut'
+  },
+  { 
+    id: 'floral-pearl', 
+    name: 'Floral Pearl (NEW)', 
+    image: '/assets/floral-pearl.png',
+    style: 'Luxury Floral'
   }
 ];
+
+
+
 
 interface TemplatePreviewProps {
   content: InvitationContent;
@@ -74,7 +108,18 @@ export default function TemplatePreview({ content, isPreview, isMuted }: Templat
         return <LuxuryDarkInvitation {...content} isPreview={isPreview} />;
     case 'stitch':
         return <StitchInvitation isPreview={isPreview} />;
+    case 'premium-3d':
+        return <Premium3DInvitation {...content} isPreview={isPreview} isMuted={isMuted} />;
+    case 'shadcn-animated':
+        return <ShadcnAnimatedInvitation content={content} />;
+    case 'white-gold-3d':
+        return <WhiteGold3DInvitation content={content} />;
+    case 'floral-pearl':
+        return <FloralPearlInvitation {...content} isPreview={isPreview} isMuted={isMuted} />;
     default:
+
+
+
       return <PinkLuxuryInvitation {...content} isPreview={isPreview} isMuted={isMuted} />;
   }
 }

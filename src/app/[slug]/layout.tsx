@@ -19,11 +19,14 @@ export async function generateMetadata(
     if (!slug) throw new Error("No slug");
 
     // 1. Fetch invitation from DB
-    const { data: invitation } = await supabase
+    const { data: invitations } = await supabase
       .from('invitations')
       .select('*')
       .eq('slug', slug)
-      .single();
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    const invitation = invitations && invitations.length > 0 ? invitations[0] : null;
 
     if (!invitation || !invitation.content) {
       return {

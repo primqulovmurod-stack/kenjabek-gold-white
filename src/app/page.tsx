@@ -46,10 +46,9 @@ export default async function Page({
   const isMainLanding = 
     host.includes('taklifnoma.asia') || 
     host.includes('www.taklifnoma.asia') ||
-    host.includes('taklifnoma-asia.vercel.app') ||
-    host.includes('localhost');
+    host.includes('taklifnoma-asia.vercel.app');
   
-  const isInvitation = params.theme || (!isMainLanding && (
+  const isInvitation = host.includes('localhost') || params.theme || (!isMainLanding && (
     host.includes('vercel.app') || 
     host.includes('pink') || 
     host.includes('gold') || 

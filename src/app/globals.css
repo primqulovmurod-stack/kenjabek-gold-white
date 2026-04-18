@@ -48,6 +48,9 @@
   --gilded-surface-container-highest: #31353c;
   --gilded-outline: #99907c;
   --gilded-outline-variant: #4d4635;
+
+  /* Targo Theme */
+  --targo-red: #EE3F2C;
 }
 
 @theme inline {
@@ -92,6 +95,9 @@
   --color-stitch-secondary-container: var(--stitch-secondary-container);
   --color-stitch-tertiary-container: var(--stitch-tertiary-container);
   --color-stitch-secondary-fixed: var(--stitch-secondary-fixed);
+
+  --color-targo-red: var(--targo-red);
+  --font-rubik: var(--font-rubik);
 
   --color-milliy-primary: var(--milliy-primary);
   --color-milliy-secondary: var(--milliy-secondary);
@@ -140,4 +146,46 @@ h1, h2, h3, h4, .font-serif {
   direction: ltr;
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
+}
+
+@layer utilities {
+  .clip-corner {
+    clip-path: polygon(
+      0% 0%, 
+      calc(100% - 12px) 0%, 
+      100% 12px, 
+      100% 100%, 
+      12px 100%, 
+      0% calc(100% - 12px)
+    );
+  }
+
+  .liquid-glass {
+    backdrop-filter: blur(40px) saturate(180%);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+  }
+  
+  .targo-headline {
+    font-family: var(--font-rubik);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c13324;
+  }
+
+  /* Text Mask Effect */
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+    color: transparent;
+  }
 }
