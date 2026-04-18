@@ -112,13 +112,12 @@ export async function GET(req: NextRequest) {
           <div
             style={{
               display: 'flex',
-              fontSize: '100px',
+              fontSize: groom.length + bride.length > 20 ? '60px' : '80px',
               fontWeight: 900,
               color: styleConfig.text,
               textAlign: 'center',
-              lineHeight: 1,
-              letterSpacing: '-0.02em',
-              marginBottom: '20px',
+              lineHeight: 1.2,
+              marginBottom: '10px',
               fontFamily: 'serif',
             }}
           >
