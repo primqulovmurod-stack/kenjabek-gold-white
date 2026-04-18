@@ -46,12 +46,12 @@ const rubik = Rubik({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.taklifnoma.asia'),
-  title: "Kenjabek & Safiya - Nikoh to'yi",
-  description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
+  title: "Taklifnoma.Asia — Virtual Taklifnomalar Yaratish",
+  description: "Eng chiroyli va interaktiv virtual taklifnomalar yaratish xizmati O'zbekistonda.",
   openGraph: {
-    title: "Kenjabek & Safiya - Nikoh to'yi",
-    description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
-    siteName: "taklifnoma.ai",
+    title: "Taklifnoma.Asia — Virtual Taklifnomalar Yaratish",
+    description: "Eng chiroyli va interaktiv virtual taklifnomalar yaratish xizmati O'zbekistonda.",
+    siteName: "Taklifnoma.Asia",
     locale: "uz_UZ",
     type: "website",
     images: [
@@ -59,14 +59,14 @@ export const metadata: Metadata = {
         url: "/assets/og-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Kenjabek & Safiya Nikoh to'yi",
+        alt: "Taklifnoma.Asia",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kenjabek & Safiya - Nikoh to'yi",
-    description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
+    title: "Taklifnoma.Asia — Virtual Taklifnomalar Yaratish",
+    description: "Eng chiroyli va interaktiv virtual taklifnomalar yaratish xizmati O'zbekistonda.",
     images: ["/assets/og-preview.jpg"],
   },
   verification: {

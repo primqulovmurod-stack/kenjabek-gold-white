@@ -19,22 +19,20 @@ export async function generateMetadata(
     if (!slug) throw new Error("No slug");
 
     // 1. Fetch invitation from DB
-    const { data: invitations } = await supabase
+    const { data: invitation } = await supabase
       .from('invitations')
       .select('*')
       .eq('slug', slug)
-      .order('created_at', { ascending: false })
-      .limit(1);
-
-    const invitation = invitations && invitations.length > 0 ? invitations[0] : null;
+      .maybeSingle();
 
     if (!invitation || !invitation.content) {
       return {
-        title: 'Taklifnoma.Asia | To\'yingiz uchun eng go\'zal dizaynlar',
+        title: "Nikoh to'yi taklifnomasi | Taklifnoma.Asia",
+        description: "Eng chiroyli va interaktiv virtual taklifnomalar yaratish xizmati.",
       };
     }
 
-  const { groomName, brideName, date } = invitation.content;
+  const { groomName, brideName, date, theme } = invitation.content;
   const title = `${groomName} & ${brideName} — Nikoh to'yi taklifnomasi 💍`;
   const description = `${date} kuni bo'ladigan baxtli kunimizga lutfan taklif etamiz! ✨`;
 
