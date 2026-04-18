@@ -49,122 +49,117 @@ export async function GET(req: NextRequest) {
 
     return new ImageResponse(
       (
-        <div
-          style={{
-            height: '100%',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: styleConfig.bg,
-            backgroundImage: styleConfig.gradient,
-            position: 'relative',
-            padding: '60px',
-            border: `24px solid ${styleConfig.border}`,
-          }}
-        >
-          {/* Logo/Site Name */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '40px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              color: styleConfig.accent,
-              fontSize: '24px',
-              fontWeight: 900,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Taklifnoma.Asia
-          </div>
-
-          {/* Decorative Border */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '20px',
-              left: '20px',
-              right: '20px',
-              bottom: '20px',
-              border: `2px solid ${styleConfig.ornament}`,
-              borderRadius: '20px',
-            }}
-          />
-
-          {/* Simple Heart Indicator */}
-          <div
-            style={{
-                fontSize: '40px',
-                marginBottom: '10px',
-                color: styleConfig.accent,
-            }}
-          >
-            ❤️
-          </div>
-
-          {/* Main Title - The Names */}
+          {/* Main Container - Floral Background Mimic */}
           <div
             style={{
               display: 'flex',
-              fontSize: groom.length + bride.length > 20 ? '60px' : '80px',
-              fontWeight: 900,
-              color: styleConfig.text,
-              textAlign: 'center',
-              lineHeight: 1.2,
-              marginBottom: '10px',
-              fontFamily: 'serif',
+              height: '100%',
+              width: '100%',
+              backgroundColor: isPink ? '#FCE4EC' : styleConfig.bg,
+              backgroundImage: isPink 
+                ? 'radial-gradient(circle at 10% 10%, #F8BBD0 0%, transparent 20%), radial-gradient(circle at 90% 90%, #F8BBD0 0%, transparent 20%), radial-gradient(circle at 50% 50%, #FCE4EC 0%, #F8BBD0 100%)' 
+                : styleConfig.gradient,
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
             }}
           >
-            {groom} & {bride}
-          </div>
+            {/* The Central Card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                padding: '60px 80px',
+                borderRadius: '40px',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
+                width: '700px',
+                border: '1px solid rgba(255,255,255,0.5)',
+              }}
+            >
+              {/* Circular Logo Initials */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '150px',
+                  height: '150px',
+                  borderRadius: '100px',
+                  border: `2px solid ${isPink ? '#E11D48' : styleConfig.accent}`,
+                  marginBottom: '40px',
+                  color: isPink ? '#E11D48' : styleConfig.accent,
+                  fontSize: '60px',
+                  fontFamily: 'serif',
+                  opacity: 0.3,
+                }}
+              >
+                {groom[0]}&{bride[0]}
+              </div>
 
-          <div
-            style={{
-              fontSize: '32px',
-              color: styleConfig.subtext,
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.3em',
-              marginBottom: '40px',
-            }}
-          >
-            {styleConfig.label}
-          </div>
+              {/* Names */}
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: '70px',
+                  fontWeight: 900,
+                  color: '#1A1A1A',
+                  textAlign: 'center',
+                  marginBottom: '10px',
+                  fontFamily: 'serif',
+                }}
+              >
+                <span style={{ color: '#1A1A1A' }}>{groom}</span>
+                <span style={{ color: isPink ? '#E11D48' : styleConfig.accent, margin: '0 20px' }}>&</span>
+                <span style={{ color: isPink ? '#E11D48' : '#1A1A1A' }}>{bride}</span>
+              </div>
 
-          {/* Date Badge */}
-          <div
-            style={{
-              display: 'flex',
-              padding: '12px 40px',
-              backgroundColor: styleConfig.accent,
-              borderRadius: '100px',
-              color: styleConfig.bg === '#FFFFFF' ? 'white' : 'white',
-              fontSize: '28px',
-              fontWeight: 800,
-              boxShadow: `0 20px 40px ${styleConfig.accent}40`,
-            }}
-          >
-            {date}
-          </div>
+              {/* Tagline */}
+              <div
+                style={{
+                  fontSize: '28px',
+                  color: '#4B5563',
+                  fontWeight: 600,
+                  marginBottom: '20px',
+                }}
+              >
+                Siz uchun maxsus taklifnoma
+              </div>
 
-          {/* Footer Promo */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '40px',
-              color: styleConfig.subtext,
-              opacity: 0.5,
-              fontSize: '18px',
-              fontWeight: 700,
-              letterSpacing: '0.1em',
-            }}
-          >
-            2026 PREMIUM VIRTUAL EDITION
+              {/* Date */}
+              <div
+                style={{
+                  display: 'flex',
+                  padding: '12px 30px',
+                  background: isPink ? 'linear-gradient(to right, #E11D48, #FF4D94)' : styleConfig.accent,
+                  borderRadius: '100px',
+                  color: 'white',
+                  fontSize: '24px',
+                  fontWeight: 800,
+                }}
+              >
+                {date}
+              </div>
+            </div>
+
+            {/* Site Logo Watermark */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '40px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                color: isPink ? '#E11D48' : styleConfig.accent,
+                fontSize: '24px',
+                fontWeight: 900,
+                letterSpacing: '0.2em',
+                opacity: 0.2,
+              }}
+            >
+              TAKLIFNOMA.ASIA
+            </div>
           </div>
-        </div>
       ),
       {
         width: 1200,
