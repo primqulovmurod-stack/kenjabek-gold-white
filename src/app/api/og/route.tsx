@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
               flexDirection: 'column',
             }}
           >
-            {/* The Real Mockup Background */}
+            {/* The Professional Mockup Background Layer */}
             {isPink ? (
               <img 
                 src="https://www.taklifnoma.asia/assets/pink_invite_mockup.png"
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
                   height: '630px',
                   objectFit: 'cover',
                 }}
-                alt="Pink Mockup"
+                alt="Mockup BG"
               />
             ) : isDark ? (
               <div 
@@ -83,54 +83,92 @@ export async function GET(req: NextRequest) {
                   height: '630px',
                   objectFit: 'cover',
                 }}
-                alt="Floral Background"
+                alt="Floral BG"
               />
             )}
 
-            {/* Premium Minimal Overlay */}
+            {/* THE EXACT WHITE CARD FROM SCREENSHOT (18:50) */}
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                backdropFilter: 'blur(4px)',
-                padding: '50px 70px',
-                borderRadius: '40px',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                width: '700px',
+                backgroundColor: 'white',
+                padding: '45px 50px',
+                borderRadius: '60px',
+                width: '600px',
+                boxShadow: '0 40px 100px rgba(0,0,0,0.15)',
+                position: 'relative',
               }}
             >
-              <div style={{ color: isPink ? '#9333EA' : '#D4AF37', fontSize: '24px', letterSpacing: '8px', marginBottom: '20px', fontWeight: 'bold' }}>
-                TAKLIFNOMA.ASIA
+              {/* Initials Circle (Purpleish Border) */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '100px',
+                  border: '1px solid rgba(168, 85, 247, 0.25)',
+                  background: 'linear-gradient(135deg, rgba(250, 245, 255, 1) 0%, rgba(245, 243, 255, 1) 100%)',
+                  marginBottom: '30px',
+                  color: '#A855F7',
+                  fontSize: '64px',
+                  fontFamily: 'serif',
+                  fontStyle: 'italic',
+                  position: 'relative',
+                }}
+              >
+                {/* Visual stars / decor signs in screenshot */}
+                <div style={{ position: 'absolute', top: '15px', fontSize: '12px', opacity: 0.4 }}>✦</div>
+                <div style={{ position: 'absolute', bottom: '15px', fontSize: '12px', opacity: 0.4 }}>✦</div>
+                {groom[0]}&{bride[0]}
               </div>
 
-              <div style={{ display: 'flex', fontSize: '80px', fontWeight: '900', color: '#1A1A1A', textAlign: 'center', marginBottom: '10px', fontFamily: 'serif' }}>
-                 {groom} & {bride}
+              {/* Bold Bi-Color Names */}
+              <div style={{ display: 'flex', fontSize: '46px', fontWeight: '900', color: '#000000', textAlign: 'center', marginBottom: '10px' }}>
+                {groom} <span style={{ color: '#D946EF', margin: '0 8px' }}>&</span> <span style={{ color: '#D946EF' }}>{bride}</span>
               </div>
 
-              <div style={{ fontSize: '24px', color: '#4B5563', letterSpacing: '4px', marginBottom: '40px', fontWeight: 'bold' }}>
-                 SIZNI TO'YIMIZGA TAKLIF ETAMIZ
+              {/* Tagline */}
+              <div style={{ fontSize: '22px', color: '#111827', fontWeight: 'bold', marginBottom: '8px' }}>
+                Siz uchun maxsus taklifnoma
               </div>
 
-              <div style={{ display: 'flex', padding: '16px 80px', background: 'linear-gradient(to right, #9333EA, #EC4899)', borderRadius: '100px', color: 'white', fontSize: '28px', fontWeight: 'bold', boxShadow: '0 10px 20px rgba(147, 51, 234, 0.3)' }}>
-                TAKLIFNOMANI OCHISH
+              <div style={{ fontSize: '14px', color: '#6B7280', textAlign: 'center', marginBottom: '35px', maxWidth: '300px', lineHeight: '1.4' }}>
+                Taklifnoma tafsilotlarini ko'rish uchun bosing.
+              </div>
+
+              {/* REPLICATING THE VIBRANT PURPLE-PINK BUTTON */}
+              <div
+                style={{
+                  display: 'flex',
+                  padding: '24px 75px',
+                  background: 'linear-gradient(to right, #9333EA, #DB2777)',
+                  borderRadius: '100px',
+                  color: 'white',
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                  boxShadow: '0 15px 35px rgba(147, 51, 234, 0.35)',
+                }}
+              >
+                Taklifnomani ochish →
               </div>
             </div>
             
-            {/* Decorative Wax Seal if in assets */}
+            {/* Added Wax Seal bottom right for extra premium feel (from the BG image area) */}
              <img 
                src="https://www.taklifnoma.asia/assets/gold-wax-seal.png"
                style={{
                  position: 'absolute',
-                 bottom: '60px',
-                 right: '100px',
-                 width: '120px',
-                 height: '120px',
-                 opacity: 0.8,
-                 transform: 'rotate(-10deg)',
+                 bottom: '80px',
+                 right: '120px',
+                 width: '130px',
+                 height: '130px',
+                 transform: 'rotate(15deg)',
+                 opacity: 0.85,
+                 filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.1))',
                }}
                alt="Seal"
              />
