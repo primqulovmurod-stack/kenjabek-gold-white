@@ -50,9 +50,9 @@ export async function GET(req: NextRequest) {
               flexDirection: 'column',
             }}
           >
-            {/* WARM BOKEH/FLORAL BACKGROUND */}
+            {/* THE MAIN FLORAL BACKGROUND */}
             <img 
-              src="https://www.taklifnoma.asia/assets/floral-pearl.png?v=8"
+              src="https://www.taklifnoma.asia/assets/floral-pearl.png?v=10"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -60,74 +60,79 @@ export async function GET(req: NextRequest) {
                 width: '1200px',
                 height: '630px',
                 objectFit: 'cover',
-                filter: 'brightness(0.9)',
+                filter: 'brightness(0.95)',
               }}
               alt="Main BG"
             />
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.05)' }} />
 
-            {/* THE RED DATE BUTTON DESIGN (18:19 Screenshot) */}
+            {/* THE WHITE CARD UI (Exactly as in 19:16 screenshot) */}
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                padding: '40px 60px',
-                borderRadius: '50px',
-                width: '580px',
-                boxShadow: '0 30px 60px rgba(0,0,0,0.1)',
+                backgroundColor: 'rgba(255, 255, 255, 0.98)',
+                padding: '50px 60px',
+                borderRadius: '70px',
+                width: '600px',
+                boxShadow: '0 40px 100px rgba(0,0,0,0.12)',
                 position: 'relative',
               }}
             >
-              {/* Top Red Label */}
-              <div style={{ color: '#E11D48', fontSize: '18px', fontWeight: 'bold', letterSpacing: '2px', marginBottom: '20px', textTransform: 'uppercase' }}>
-                TAKLIFNOMA.ASIA
-              </div>
-
-              {/* Initials Circle (Pinkish) */}
+              {/* Initials Circle */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: '120px',
-                  height: '120px',
-                  borderRadius: '60px',
-                  border: '1px solid #FBCFE8',
-                  background: '#FFF1F2',
-                  marginBottom: '25px',
-                  color: '#D946EF',
-                  fontSize: '48px',
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '100px',
+                  border: '2px solid #E9D5FF',
+                  background: 'white',
+                  marginBottom: '35px',
+                  color: '#9333EA',
+                  fontSize: '68px',
                   fontFamily: 'serif',
+                  fontStyle: 'italic',
+                  position: 'relative',
+                  filter: 'drop-shadow(0 4px 6px rgba(147, 51, 234, 0.1))',
                 }}
               >
+                <div style={{ position: 'absolute', top: '15px', fontSize: '14px', opacity: 0.5 }}>✦</div>
+                <div style={{ position: 'absolute', bottom: '15px', fontSize: '14px', opacity: 0.5 }}>✦</div>
                 {groom[0]}&{bride[0]}
               </div>
 
-              {/* Names */}
-              <div style={{ display: 'flex', fontSize: '50px', fontWeight: '500', color: '#111827', textAlign: 'center', marginBottom: '5px', letterSpacing: '-1px' }}>
-                {groom} <span style={{ margin: '0 10px' }}>&</span> {bride}
+              {/* Bold Bi-Color Names */}
+              <div style={{ display: 'flex', fontSize: '48px', fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: '8px', letterSpacing: '-1px' }}>
+                {groom} <span style={{ color: '#9333EA', margin: '0 12px' }}>&</span> <span style={{ color: '#9333EA' }}>{bride}</span>
               </div>
 
-              {/* Subtitle */}
-              <div style={{ fontSize: '16px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '25px' }}>
-                SIZ UCHUN MAXSUS TAKLIFNOMA
+              {/* Tagline */}
+              <div style={{ fontSize: '24px', color: '#1F2937', fontWeight: '500', marginBottom: '10px' }}>
+                Siz uchun maxsus taklifnoma
               </div>
 
-              {/* THE RED DATE BUTTON */}
+              {/* Instruction Text */}
+              <div style={{ fontSize: '16px', color: '#6B7280', textAlign: 'center', marginBottom: '40px' }}>
+                Taklifnoma tafsilotlarini ko'rish uchun bosing.
+              </div>
+
+              {/* THE GRADIENT BUTTON */}
               <div
                 style={{
                   display: 'flex',
-                  padding: '12px 60px',
-                  background: '#E11D48',
+                  padding: '24px 80px',
+                  background: 'linear-gradient(to right, #9333EA, #EC4899)',
                   borderRadius: '100px',
                   color: 'white',
-                  fontSize: '24px',
+                  fontSize: '26px',
                   fontWeight: 'bold',
+                  boxShadow: '0 20px 40px rgba(147, 51, 234, 0.4)',
                 }}
               >
-                {date}
+                Taklifnomani ochish →
               </div>
             </div>
           </div>
