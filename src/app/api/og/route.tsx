@@ -14,49 +14,36 @@ export async function GET(req: NextRequest) {
     const theme = searchParams.get('theme') || 'luxury';
 
     // Configuration based on theme
-    let styleConfig = {
-      bg: '#0A0A0A',
-      accent: '#E11D48',
-      text: 'white',
-      subtext: '#9CA3AF',
-      gradient: 'radial-gradient(circle at 50% 50%, #E11D4820 0%, transparent 80%)',
-      border: '#141416',
-      ornament: 'rgba(225, 29, 72, 0.1)',
-      label: "Nikoh To'yi Taklifnomasi"
-    };
+    const isDark = ['luxury', 'goldclassic', 'rolex', 'milliy', 'premium-3d', 'luxury-dark', 'shadcn-animated'].includes(theme);
+    const isGold = ['gold-white', 'gold-classic-white', 'white-gold-3d', 'goldclassic', 'rolex'].includes(theme);
+    const isPink = ['pink-flower', 'pink-white', 'pink-luxury', 'floral-pearl', 'floral'].includes(theme);
 
-    if (theme === 'gold-white' || theme === 'gold-classic-white' || theme === 'floral' || theme === 'pink-white') {
+    if (isDark) {
+      styleConfig = {
+        bg: theme === 'milliy' ? '#003366' : '#0A0A0A',
+        accent: theme === 'milliy' || isGold ? '#FFD700' : '#E11D48',
+        text: 'white',
+        subtext: theme === 'milliy' ? '#B0C4DE' : '#9CA3AF',
+        gradient: theme === 'milliy' 
+          ? 'radial-gradient(circle at 50% 50%, #004080 0%, transparent 80%)' 
+          : `radial-gradient(circle at 50% 50%, ${isGold ? '#D4AF37' : '#E11D48'}20 0%, transparent 80%)`,
+        border: theme === 'milliy' ? '#00264d' : '#141416',
+        ornament: isGold ? 'rgba(212, 175, 55, 0.1)' : 'rgba(225, 29, 72, 0.1)',
+        label: theme.includes('Premium') ? "Premium Nikoh Taklifnomasi" : "Nikoh To'yi Taklifnomasi"
+      };
+    } else {
+      // Light Themes (Pink, Flower, White Gold, etc)
       styleConfig = {
         bg: '#FFFFFF',
-        accent: theme.includes('pink') ? '#E11D48' : '#D4AF37',
+        accent: isPink ? '#E11D48' : '#D4AF37',
         text: '#1A1A1A',
         subtext: '#6B7280',
-        gradient: theme.includes('pink') ? 'radial-gradient(circle at 50% 50%, #FFE4E6 0%, transparent 80%)' : 'radial-gradient(circle at 50% 50%, #FAF3E0 0%, transparent 80%)',
+        gradient: isPink 
+          ? 'radial-gradient(circle at 50% 50%, #FFE4E6 0%, transparent 80%)' 
+          : 'radial-gradient(circle at 50% 50%, #FAF3E0 0%, transparent 80%)',
         border: '#F3F4F6',
-        ornament: theme.includes('pink') ? 'rgba(225, 29, 72, 0.05)' : 'rgba(212, 175, 55, 0.1)',
+        ornament: isPink ? 'rgba(225, 29, 72, 0.05)' : 'rgba(212, 175, 55, 0.1)',
         label: "Nikoh To'yi Taklifnomasi"
-      };
-    } else if (theme === 'goldclassic' || theme === 'rolex') {
-      styleConfig = {
-        bg: '#050505',
-        accent: '#D4AF37',
-        text: '#FDFCF0',
-        subtext: '#A39268',
-        gradient: 'radial-gradient(circle at 50% 50%, #D4AF3715 0%, transparent 80%)',
-        border: '#111111',
-        ornament: 'rgba(212, 175, 55, 0.1)',
-        label: "Premium Nikoh Taklifnomasi"
-      };
-    } else if (theme === 'milliy') {
-      styleConfig = {
-        bg: '#003366', // Deep Uzbek Blue
-        accent: '#FFD700',
-        text: 'white',
-        subtext: '#B0C4DE',
-        gradient: 'radial-gradient(circle at 50% 50%, #004080 0%, transparent 80%)',
-        border: '#00264d',
-        ornament: 'rgba(255, 215, 0, 0.1)',
-        label: "Milliy Nikoh Taklifnomasi"
       };
     }
 
@@ -186,6 +173,9 @@ export async function GET(req: NextRequest) {
       {
         width: 1200,
         height: 630,
+        headers: {
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
       }
     );
   } catch (e: any) {
