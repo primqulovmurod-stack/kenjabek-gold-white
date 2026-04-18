@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "taklifnoma.asia"
+        }
+      ],
+      "destination": "https://www.taklifnoma.asia/:path*",
+      "permanent": true
+    }
+  ]
+}
