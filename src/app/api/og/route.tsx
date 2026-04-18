@@ -50,9 +50,9 @@ export async function GET(req: NextRequest) {
               flexDirection: 'column',
             }}
           >
-            {/* THE USER-PROVIDED MAIN BACKGROUND (main-bg-final.png) */}
+            {/* THE NIGHT BANQUET BACKGROUND (User-provided) */}
             <img 
-              src="https://www.taklifnoma.asia/assets/main-bg-final.png?v=200"
+              src="https://www.taklifnoma.asia/assets/night-banquet-bg.png?v=300"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -60,8 +60,9 @@ export async function GET(req: NextRequest) {
                 width: '1200px',
                 height: '630px',
                 objectFit: 'cover',
+                filter: 'brightness(0.85)',
               }}
-              alt="Main BG"
+              alt="Night Banquet BG"
             />
 
             {/* THE WHITE CARD UI (Exactly as in 20:25 screenshot) */}
