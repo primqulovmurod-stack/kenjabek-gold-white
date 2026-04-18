@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       gradient: 'radial-gradient(circle at 50% 50%, #E11D4820 0%, transparent 80%)',
       border: '#141416',
       ornament: 'rgba(225, 29, 72, 0.1)',
-      label: "Nikan To'yi Taklifnomasi"
+      label: "Nikoh To'yi Taklifnomasi"
     };
 
     if (theme === 'gold-white' || theme === 'gold-classic-white' || theme === 'floral' || theme === 'pink-white') {
