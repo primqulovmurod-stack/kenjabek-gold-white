@@ -52,8 +52,21 @@ export async function GET(req: NextRequest) {
               padding: '60px',
             }}
           >
-            {/* Background for Pink */}
-            {isPink && (
+            {/* Background for Themes */}
+            {['pink-flower', 'pink-white', 'pink-luxury'].includes(theme) ? (
+              <img 
+                src="https://www.taklifnoma.asia/assets/premium-pink-bg.png"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '1200px',
+                  height: '630px',
+                  objectFit: 'cover',
+                }}
+                alt="Pink Floral Background"
+              />
+            ) : isPink ? (
               <img 
                 src="https://www.taklifnoma.asia/assets/floral-pearl.png"
                 style={{
@@ -63,11 +76,11 @@ export async function GET(req: NextRequest) {
                   width: '1200px',
                   height: '630px',
                   objectFit: 'cover',
-                  opacity: 0.6,
+                  opacity: 0.8,
                 }}
                 alt="Floral Background"
               />
-            )}
+            ) : null}
 
             {/* Content for Dark Theme (as per request) */}
             {isDark ? (
