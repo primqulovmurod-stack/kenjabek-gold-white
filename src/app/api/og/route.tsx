@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
           >
             {/* Background Image */}
             <img 
-              src="https://taklifnoma.asia/assets/wedding-bg-new.jpg"
+              src="https://www.taklifnoma.asia/assets/wedding-bg-new.jpg"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -182,7 +182,7 @@ export async function GET(req: NextRequest) {
             }}
           >
             <img 
-              src="https://taklifnoma.asia/assets/wedding-bg-new.jpg"
+              src="https://www.taklifnoma.asia/assets/wedding-bg-new.jpg"
               style={{
                 position: 'absolute',
                 top: 0,
