@@ -80,6 +80,7 @@ export default function EditClient({ id }: { id: string }) {
   const [isPreviewMobile, setIsPreviewMobile] = useState(true);
   const [showPayment, setShowPayment] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [slug, setSlug] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [selectedMusicName, setSelectedMusicName] = useState<string>("");
   const [isAudioMuted, setIsAudioMuted] = useState(false);
@@ -205,7 +206,7 @@ export default function EditClient({ id }: { id: string }) {
     try {
         const { data, error } = await supabase
             .from('invitations')
-            .select('content, is_paid')
+            .select('content, is_paid, slug')
             .eq('id', id)
             .single();
             
@@ -238,6 +239,7 @@ export default function EditClient({ id }: { id: string }) {
                 }
             }
             setContent(finalContent);
+            setSlug(data.slug);
         } else {
             const localData = localStorage.getItem('taklifnoma_invitations');
             if (localData) {
@@ -251,6 +253,7 @@ export default function EditClient({ id }: { id: string }) {
                         }
                     }
                     setContent(finalContent);
+                    setSlug(currentInvite.slug);
                     setIsPaid(currentInvite.is_paid);
                 }
             }
@@ -286,7 +289,7 @@ export default function EditClient({ id }: { id: string }) {
 
   const handleSave = async (showPaymentOnSuccess: boolean = false, forcedPhone?: string) => {
     setIsSaving(true);
-    const finalSlug = generateSlug(content.groomName, content.brideName, content.date);
+    const finalSlug = slug || generateSlug(content.groomName, content.brideName, content.date);
     const finalContent = forcedPhone ? { ...content, phone: forcedPhone } : content;
 
     try {
@@ -410,6 +413,16 @@ export default function EditClient({ id }: { id: string }) {
             <div className="space-y-5">
               <input type="text" placeholder="Kuyov" value={content.groomName} onChange={(e) => updateField('groomName', e.target.value)} className={`w-full px-8 py-5 rounded-[1.5rem] text-sm font-bold ${isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'}`} />
               <input type="text" placeholder="Kelin" value={content.brideName} onChange={(e) => updateField('brideName', e.target.value)} className={`w-full px-8 py-5 rounded-[1.5rem] text-sm font-bold ${isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'}`} />
+              <div className="space-y-2">
+                <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest px-4">Havola (Slug) - Keshni yangilash uchun o'zgartiring</label>
+                <input 
+                  type="text" 
+                  placeholder="link-nomi" 
+                  value={slug} 
+                  onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))} 
+                  className={`w-full px-8 py-5 rounded-[1.5rem] text-sm font-bold ${isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'}`} 
+                />
+              </div>
               <textarea rows={3} value={content.description} onChange={(e) => updateField('description', e.target.value)} className={`w-full px-8 py-5 rounded-[1.5rem] text-sm font-bold resize-none ${isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-gray-900'}`} />
             </div>
           </section>
