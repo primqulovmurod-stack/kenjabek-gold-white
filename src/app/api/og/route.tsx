@@ -14,27 +14,158 @@ export async function GET(req: NextRequest) {
     const theme = searchParams.get('theme') || 'luxury';
 
     const isDark = ['luxury', 'goldclassic', 'rolex', 'milliy', 'premium-3d', 'luxury-dark', 'shadcn-animated', 'black-gold', 'dark-luxury'].includes(theme);
-    const isGold = ['gold-white', 'gold-classic-white', 'white-gold-3d', 'goldclassic', 'rolex', 'black-gold'].includes(theme);
-    const isPink = ['pink-flower', 'pink-white', 'pink-luxury', 'floral-pearl', 'floral'].includes(theme);
 
-    const styleConfig = isDark ? {
-        bg: theme === 'milliy' ? '#003366' : '#0A0A0A',
-        accent: isGold ? '#D4AF37' : '#E11D48',
-        text: 'white',
-        subtext: '#9CA3AF',
-        gradient: `radial-gradient(circle at 50% 50%, ${isGold ? '#D4AF37' : '#E11D48'}20 0%, transparent 80%)`,
-        label: "NIKOH TO'YI TAKLIFNOMASI"
-    } : {
-        bg: '#FFF0F3',
-        accent: isPink ? '#E11D48' : '#D4AF37',
-        text: '#1A1A1A',
-        subtext: '#6B7280',
-        gradient: isPink 
-          ? 'radial-gradient(circle at center, #FFE4E6 0%, #FFF0F3 100%)' 
-          : 'radial-gradient(circle at 50% 50%, #FAF3E0 0%, transparent 80%)',
-        label: "NIKOH TO'YI TAKLIFNOMASI"
-    };
+    // Standard labels for all themes
+    const labelText = "NIKOH TO'YI TAKLIFNOMASI";
 
+    if (isDark) {
+      return new ImageResponse(
+        (
+          <div
+            style={{
+              height: '100%',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#0A0A0A',
+              position: 'relative',
+              padding: '60px',
+              border: '24px solid #141416',
+            }}
+          >
+            {/* Background Image */}
+            <img 
+              src="https://taklifnoma.asia/assets/wedding-bg-new.jpg"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '1200px',
+                height: '630px',
+                objectFit: 'cover',
+                opacity: 0.4,
+              }}
+              alt="Wedding BG"
+            />
+
+            {/* Logo/Site Name */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '40px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                color: '#E11D48',
+                fontSize: '24px',
+                fontWeight: 900,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Taklifnoma.Asia
+            </div>
+
+            {/* Decorative Border */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '20px',
+                left: '20px',
+                right: '20px',
+                bottom: '20px',
+                border: '2px solid rgba(225, 29, 72, 0.1)',
+                borderRadius: '20px',
+              }}
+            />
+
+            {/* Icon/Heart */}
+            <div
+              style={{
+                  display: 'flex',
+                  marginBottom: '20px',
+                  color: '#E11D48',
+                  opacity: 0.8
+              }}
+            >
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </div>
+
+            {/* Main Title - The Names */}
+            <div
+              style={{
+                display: 'flex',
+                fontSize: '100px',
+                fontWeight: 900,
+                color: 'white',
+                textAlign: 'center',
+                lineHeight: 1,
+                letterSpacing: '-0.02em',
+                marginBottom: '20px',
+                fontFamily: 'serif',
+              }}
+            >
+              {groom} & {bride}
+            </div>
+
+            <div
+              style={{
+                fontSize: '32px',
+                color: '#9CA3AF',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.3em',
+                marginBottom: '40px',
+              }}
+            >
+              {labelText}
+            </div>
+
+            {/* Date Badge */}
+            <div
+              style={{
+                display: 'flex',
+                padding: '12px 40px',
+                backgroundColor: '#E11D48',
+                borderRadius: '100px',
+                color: 'white',
+                fontSize: '28px',
+                fontWeight: 800,
+                boxShadow: '0 20px 40px rgba(225, 29, 72, 0.3)',
+              }}
+            >
+              {date}
+            </div>
+
+            {/* Footer Promo */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '40px',
+                color: 'rgba(255,255,255,0.3)',
+                fontSize: '18px',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+              }}
+            >
+              2026 PREMIUM VIRTUAL EDITION
+            </div>
+          </div>
+        ),
+        {
+          width: 1200,
+          height: 630,
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+          },
+        }
+      );
+    }
+
+    // Default Light Theme (White Card)
     return new ImageResponse(
       (
           <div
@@ -50,7 +181,6 @@ export async function GET(req: NextRequest) {
               flexDirection: 'column',
             }}
           >
-            {/* THE GENERATED NIGHT BANQUET BACKGROUND (v400) */}
             <img 
               src="https://taklifnoma.asia/assets/wedding-bg-new.jpg"
               style={{
@@ -60,12 +190,10 @@ export async function GET(req: NextRequest) {
                 width: '1200px',
                 height: '630px',
                 objectFit: 'cover',
-                filter: 'brightness(0.9)',
               }}
-              alt="Night Banquet BG"
+              alt="Wedding BG"
             />
 
-            {/* THE WHITE CARD UI (Exactly as in 20:25 screenshot) */}
             <div
               style={{
                 display: 'flex',
@@ -79,7 +207,6 @@ export async function GET(req: NextRequest) {
                 position: 'relative',
               }}
             >
-              {/* Initials Circle */}
               <div
                 style={{
                   display: 'flex',
@@ -96,30 +223,23 @@ export async function GET(req: NextRequest) {
                   fontFamily: 'serif',
                   fontStyle: 'italic',
                   position: 'relative',
-                  filter: 'drop-shadow(0 4px 6px rgba(147, 51, 234, 0.1))',
                 }}
               >
-                <div style={{ position: 'absolute', top: '15px', fontSize: '14px', opacity: 0.5 }}>✦</div>
-                <div style={{ position: 'absolute', bottom: '15px', fontSize: '14px', opacity: 0.5 }}>✦</div>
                 {(groom || 'K')[0]}&{(bride || 'B')[0]}
               </div>
 
-              {/* Bold Bi-Color Names */}
-              <div style={{ display: 'flex', fontSize: '52px', fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: '8px', letterSpacing: '-1px' }}>
+              <div style={{ display: 'flex', fontSize: '52px', fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: '8px' }}>
                 {groom} <span style={{ color: '#9333EA', margin: '0 12px' }}>&</span> <span style={{ color: '#9333EA' }}>{bride}</span>
               </div>
 
-              {/* Tagline */}
               <div style={{ fontSize: '24px', color: '#1F2937', fontWeight: '500', marginBottom: '10px' }}>
-                Siz uchun maxsus taklifnoma
+                {labelText}
               </div>
 
-              {/* Instruction Text */}
               <div style={{ fontSize: '16px', color: '#6B7280', textAlign: 'center', marginBottom: '40px' }}>
-                Taklifnoma tafsilotlarini ko'rish uchun bosing.
+                {date} kuni bo'ladigan baxtli kunimizga taklif etamiz!
               </div>
 
-              {/* THE GRADIENT BUTTON */}
               <div
                 style={{
                   display: 'flex',
@@ -129,7 +249,6 @@ export async function GET(req: NextRequest) {
                   color: 'white',
                   fontSize: '26px',
                   fontWeight: 'bold',
-                  boxShadow: '0 20px 40px rgba(147, 51, 234, 0.4)',
                 }}
               >
                 Taklifnomani ochish →
@@ -146,8 +265,6 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (e: any) {
-    console.error('OG Image Error:', e.message);
-    // Fallback to a plain response if it fails
     return new Response(`Error generating image`, { status: 500 });
   }
 }
