@@ -37,7 +37,7 @@ export async function generateMetadata(
   const description = `${date} kuni bo'ladigan baxtli kunimizga lutfan taklif etamiz! ✨`;
 
   // 2. Generate Dynamic OG Image URL
-  const baseUrl = 'https://www.taklifnoma.asia';
+  const baseUrl = 'https://taklifnoma.asia';
   const ogSearchParams = new URLSearchParams({
     groom: groomName,
     bride: brideName,
