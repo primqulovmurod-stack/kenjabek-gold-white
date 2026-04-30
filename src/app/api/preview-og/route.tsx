@@ -72,7 +72,7 @@ export async function GET(req: NextRequest) {
                 fontStyle: 'italic',
               }}
             >
-              {(groom || 'K')[0].toLowerCase()}&{(bride || 'B')[0].toUpperCase()}
+              {(groom || 'K')[0].toUpperCase()}&{(bride || 'B')[0].toUpperCase()}
             </div>
 
             {/* Names Title */}
