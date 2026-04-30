@@ -44,7 +44,8 @@ export async function generateMetadata(
     date: date,
     theme: theme || 'luxury'
   }).toString();
-  const ogImage = `${baseUrl}/api/og?${ogSearchParams}&v=500`;
+  const timestamp = invitation.created_at ? new Date(invitation.created_at).getTime() : Date.now();
+  const ogImage = `${baseUrl}/api/og?${ogSearchParams}&v=${timestamp}`;
 
     return {
       title,
