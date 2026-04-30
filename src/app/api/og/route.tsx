@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
           >
             {/* THE GENERATED NIGHT BANQUET BACKGROUND (v400) */}
             <img 
-              src="https://www.taklifnoma.asia/assets/night-banquet-final.png?v=400"
+              src="https://taklifnoma.asia/assets/night-banquet-final.png?v=400"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -101,7 +101,7 @@ export async function GET(req: NextRequest) {
               >
                 <div style={{ position: 'absolute', top: '15px', fontSize: '14px', opacity: 0.5 }}>✦</div>
                 <div style={{ position: 'absolute', bottom: '15px', fontSize: '14px', opacity: 0.5 }}>✦</div>
-                {groom[0]}&{bride[0]}
+                {(groom || 'K')[0]}&{(bride || 'B')[0]}
               </div>
 
               {/* Bold Bi-Color Names */}
